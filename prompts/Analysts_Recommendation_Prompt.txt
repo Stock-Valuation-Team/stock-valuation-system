@@ -1,0 +1,20 @@
+Stock to analyze: [Tata Motors]
+Current date: [Take today’s date]
+For the stock specified above, provide a detailed analysis in the exact same style, format, and structure as the sample output below.
+Do not deviate in any way.
+Follow these instructions precisely:
+Use the latest available close price as "Current Price (Latest Close)".
+
+Show market capitalization in Indian currency format, both in lakh crore and lakh (e.g., ₹10.81 lakh crore = ₹1,08,10,000 lakh).
+Use these section names and order exactly:
+Professional Institutional Recommendations
+Target Price Distribution
+Key Takeaways
+Actionable Insights for Investors
+Tables must have the same columns, wording, and style as in the sample.
+State Consensus Professional Recommendation exactly as shown.
+The Implied Upside/Downside column must be calculated versus the latest close price.
+Do not include niceties, follow-ups, or extra commentary.
+Do not include individual analyst/brokerage tables.
+Do not add a “structure” section or any introductory text.
+Maintain the exact formatting, tone, and content style shown in the sample below. Not required to show date in output, use date for your analysis.

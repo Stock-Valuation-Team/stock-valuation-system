@@ -1,0 +1,5 @@
+Stock to analyze: [Tata Motors, Suzlon Energy, GAIL, BHEL, Polycab India,Varun Beverages,P I Industries,Motil.Oswal Finance,Lloyds Metals,ICICI Securities,Nippon Life India,CDSL,J B Chemicals,Natco Pharma]
+Current date: [Take today’s date]
+Fileds : [closing price, price 1 year ago, P/E Ratio, Market Capitalization, dividends]
+show only table and remove other data
+Source: [Screener, Money Control]
