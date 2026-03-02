@@ -1,0 +1,17 @@
+conda update conda
+conda create -n myenv anaconda
+conda env list
+conda activate myenv
+conda install numpy pandas
+conda list
+conda deactivate
+conda remove -n myenv --all
+conda install pytorch torchvision torchaudio
+conda install flask flask-restful
+python manage.py runserver
+conda install openai
+
+
+pip install git+https://github.com/nathanrchn/perplexityai.git
+conda install git
+conda install openai==0.28
