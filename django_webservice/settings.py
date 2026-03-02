@@ -55,7 +55,7 @@ ROOT_URLCONF = "django_webservice.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'application/templates'],  #added this extra line
+        "DIRS": [BASE_DIR / 'application/templates' ,BASE_DIR / 'static/img'],  #added this extra line
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -124,3 +124,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #CORS_ALLOWED_ORIGINS = [     "http://localhost:8000",     "http://127.0.0.1:8000" ]
 
 #CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000"]
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'productionfiles'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'mystaticfiles'
+]

@@ -1,57 +1,141 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html>
+<head>
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2, p {
+  margin: 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #38444d;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td {
+  padding-top: 20px;    /* Adds space above content */
+  padding-bottom: 20px; /* Adds space below content */
+}
+</style>
+</head>
 <body>
-<!--header-->
-<div style="height:10%;">
-    <h2 align="center">Stock Analytics Platform</h2>
-    <hr>
-</div>
-<div style="width:100%;">
-    <!side bar-->
-    <div style="width:20%; float:left; border-right-style:groove">
-        <ul>
-            <b>
-                <li><a href="admin/">Admin</a></li>
-                <li><a href="show_holdings/">Holdings</a></li>
-                <li><a href="show_universe/">Universe Info</a></li>
-               <!-- <h4>Enter SRN to fetch marks</h4>-->
-                <!--<form method="POST"
-                      action="http://127.0.0.1:8000/retrieve_marks/">
-                    <input type="text"
-                           name="SRN"
-                           placeholder="SRN">
-                    <button type="submit">Retrieve</button>
-                </form>-->
 
-               <!-- <h4>Enter SRN to fetch marks</h4>
-                <form method="POST"
-                      action="http://127.0.0.1:8000/show_marks/">
-                    <input type="text"
-                           name="SRN"
-                           placeholder="SRN">
-                    <button type="submit">Show</button>
-                </form>-->
+<ul>
+    <li><a href="">Home</a></li>
+    <li><a href="admin/">Admin</a></li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Holdings</a>
+        <div class="dropdown-content">
+            <a href="show_holdings/">Holding Details</a>
+            <a href="show_holdings/">Holding Analytics</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Universe</a>
+        <div class="dropdown-content">
+            <a href="show_universe/">Universe Details</a>
+            <a href="show_universe/">Universe Analytics</a>
+        </div>
+    </li>
+</ul>
 
-            </b>
-        </ul>
-    </div>
-
-
-    <!--contents-->
-    <div style="margin-left:21%;">
-        <p>
-        <!--<h2 align="center">About PES University</h2>-->
-        <img src="application\templates\stock_market.jpeg" alt="storck_market">
-
-</body>
-        </p>
-    </div>
-</div>
-<br><br><br>
-<!--footer-->
-<hr>
 <div>
-    <!--<h4 align="left">All rights reserved@PES University</h4>-->
+
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td><img src="static/india.JPG" alt="logo" width="500" height="300"></td>
+            <td><img src="static/companies.jpeg" alt="logo" width="500" height="300">
+
+        </tr>
+        <tr>
+            <td><img src="static/puzzled.JPG" alt="logo" width="500" height="300"></td>
+            <td><img src="static/Understand.JPG" alt="logo" width="500" height="300"></td>
+        </tr>
+
+        <tr>
+            <td><img src="static/nse.jpg" alt="logo" width="500" height="300"></td>
+            <td><img src="static/bull.jpg" alt="logo" width="500" height="300"></td>
+        </tr>
+
+        <tr>
+            <td><img src="static/Investors.JPG" alt="logo" width="500" height="300"></td>
+            <td><img src="static/career.JPG" alt="logo" width="500" height="300"></td>
+        </tr>
+        <tr>
+            <td><img src="static/stock_market.jpeg" alt="logo" width="500" height="300"></td>
+            <td><img src="static/stock_market.jpg" alt="logo" width="500" height="300"></td>
+        </tr>
+        <tr>
+            <td><img src="static/fando.jpg" alt="logo" width="500" height="300"></td>
+            <td><img src="static/fando2.jpg" alt="logo" width="500" height="300"></td>
+        </tr>
+        <tr>
+            <td><img src="static/fin.jpg" alt="logo" width="500" height="300"></td>
+            <td><img src="static/why.jpg" alt="logo" width="500" height="300"></td>
+        </tr>
+
+
 </div>
+
 </body>
 </html>
+
+
