@@ -21,7 +21,7 @@ from django.urls import path
 from application.modules import simple_view
 from application.modules import app_view
 from application.modules import post_request_view
-from controller.holdings_controller import holdings_info
+from controller.data_controller import holdings_info, universe_info
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,5 +31,6 @@ urlpatterns = [
     path("retrieve_marks/", post_request_view.retrieve_marks, name = 'retrieve_marks'),
     path("show_marks/", post_request_view.show_marks, name = 'show_marks'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
+    path("show_universe/", universe_info, name = 'universe_info'),
 
 ]

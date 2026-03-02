@@ -13,7 +13,9 @@ conn = psycopg2.connect(
 # method
 cursor = conn.cursor()
 
-sql = '''CREATE TABLE IF NOT EXISTS public.holdings
+sql = '''
+DROP TABLE IF EXISTS holdings;
+CREATE TABLE IF NOT EXISTS public.holdings
 (
     symbol text COLLATE pg_catalog."default",
     stock text COLLATE pg_catalog."default",

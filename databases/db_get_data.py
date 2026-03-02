@@ -1,5 +1,5 @@
 import psycopg2
-from db_connection import get_db_connection
+from databases.db_connection import get_db_connection
 
 
 
@@ -27,5 +27,5 @@ def get_holdings():
 if __name__ == "__main__":
     universe_result = get_universe()
     print(universe_result)
-    universe_result = get_holdings()
-    print(universe_result)
+    holdings_result = get_holdings()
+    print(holdings_result)

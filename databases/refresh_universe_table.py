@@ -13,7 +13,9 @@ conn = psycopg2.connect(
 # method
 cursor = conn.cursor()
 
-sql = '''CREATE TABLE IF NOT EXISTS public.universe
+sql = '''
+DROP TABLE IF EXISTS public.universe;
+CREATE TABLE IF NOT EXISTS public.universe
 (
     symbol text COLLATE pg_catalog."default",
     stock text COLLATE pg_catalog."default"
