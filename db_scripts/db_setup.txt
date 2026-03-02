@@ -1,0 +1,61 @@
+Download Postgres(18.3) installer from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+Istall with defaults: user: vishnu Pwd: visnu
+port 5432
+
+symbol, stock, qty, buy_price, buy_date, exchange, strategy
+
+-- Table: public.holdings
+
+-- DROP TABLE IF EXISTS public.holdings;
+
+CREATE TABLE IF NOT EXISTS public.holdings
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    qty integer,
+    buy_date date,
+    buy_price integer,
+    exchange text COLLATE pg_catalog."default",
+    strategy text COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.holdings
+    OWNER to postgres;
+
+
+INSERT INTO public.holdings(
+	symbol, stock, qty, buy_date, buy_price, exchange, strategy)
+	VALUES ('SUZLON', 'Suzlon Energy Ltd', 200, '1-3-2026', 41, 'BSE', 'Nift50');
+Select * from public.holdings
+
+
+-- Table: public.universe
+
+-- DROP TABLE IF EXISTS public.universe;
+
+CREATE TABLE IF NOT EXISTS public.universe
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.universe
+    OWNER to postgres;
+
+INSERT INTO public.universe(
+	symbol, stock)
+	VALUES ('HDFCBANK', 'HDFC Bank Ltd');
+
+INSERT INTO public.universe(
+	symbol, stock)
+	VALUES ('SUZLON', 'Suzlon Energy Ltd');
+
+INSERT INTO public.universe(
+	symbol, stock)
+	VALUES ('TMPV', 'Tata Motors Passenger Vhcls Ltd');
+
+Select * from public.universe
