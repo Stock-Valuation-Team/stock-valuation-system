@@ -21,12 +21,16 @@ from django.urls import path
 from application.modules import simple_view
 from application.modules import app_view
 from application.modules import post_request_view
-from controller.data_controller import holdings_info, universe_info
+from controller.holdings_controller import holdings_info, holdings_analytics
+from controller.universe_controller import  universe_info, universe_analytics
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', app_view.index, name='index'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
+    path("show_holdings_analytics/", holdings_analytics, name = 'holdings_analytics'),
     path("show_universe/", universe_info, name = 'universe_info'),
+    path("", universe_analytics, name = 'universe_analytics'),
 
 ]
