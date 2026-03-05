@@ -15,3 +15,5 @@ conda install openai
 pip install git+https://github.com/nathanrchn/perplexityai.git
 conda install git
 conda install openai==0.28
+
+conda install yfinance

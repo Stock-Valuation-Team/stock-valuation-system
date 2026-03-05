@@ -16,7 +16,8 @@ def db_data_to_html_table(db_data):
         # Add header to table
         html_content = html_content + '<tr>'
         for col in headers:
-            html_content = html_content + '<th><b>' + col.upper().replace("_", " ") + '</th>'
+            #html_content = html_content + '<th><b>' + col.upper().replace("_", " ") + '</th>'
+            html_content = html_content + '<th><b>' + col + '</th>'
         html_content = html_content + '</tr>'
 
         # Add table contents
