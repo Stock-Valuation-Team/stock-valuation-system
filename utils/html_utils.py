@@ -18,14 +18,23 @@ def db_data_to_html_table(db_data):
         for col in headers:
             #html_content = html_content + '<th><b>' + col.upper().replace("_", " ") + '</th>'
             html_content = html_content + '<th><b>' + col + '</th>'
+        #if with_link == True:
+        #html_content = html_content + '<th><b>' + 'Link' + '</th>'
         html_content = html_content + '</tr>'
 
         # Add table contents
         for dict in db_data:
             html_content = html_content + '<tr>'
             for header in headers:
+                stock_name = str(dict[header])
                 print(dict[header])
-                html_content = html_content + '<th>' + str(dict[header]) + '</th>'
+                if header != 'symbol':
+                    html_content = html_content + '<th>' + stock_name + '</th>'
+                else:
+                    html_content = html_content + '<th>' + '<a target="_blank" href="https://www.screener.in/company/' \
+                                   + stock_name + '/consolidated/">' + stock_name + '</a>' + '</th>'
+
+            #html_content = html_content + '<th>' + 'https://www.screener.in/company/ONGC/consolidated/' + '</th>'
             html_content = html_content + '</tr>'
         html_content = html_content + '</table>'
         return html_content

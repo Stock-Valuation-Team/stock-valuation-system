@@ -31,23 +31,7 @@ INSERT INTO public.holdings(
 Select * from public.holdings
 
 
--- Table: public.universe
-
--- DROP TABLE IF EXISTS public.universe;
-
-CREATE TABLE IF NOT EXISTS public.universe
-(
-    symbol text COLLATE pg_catalog."default",
-    stock text COLLATE pg_catalog."default"
-)
-
-TABLESPACE pg_default;
-
--- Table: public.universe
-
--- DROP TABLE IF EXISTS public.universe;
-
-CREATE TABLE IF NOT EXISTS public.universe
+CREATE TABLE IF NOT EXISTS public.universe_custom
 (
     symbol text COLLATE pg_catalog."default",
     stock text COLLATE pg_catalog."default",
@@ -56,10 +40,24 @@ CREATE TABLE IF NOT EXISTS public.universe
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.universe
+ALTER TABLE IF EXISTS public.universe_custom
     OWNER to postgres;
 
-Select * from public.universe
+-- Table: public.nifty50_universe
+
+-- DROP TABLE IF EXISTS public.nifty50_universe;
+
+CREATE TABLE IF NOT EXISTS public.nifty50_universe
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.nifty50_universe
+    OWNER to postgres;
 
 
 -- Table: public.nifty50_constituents

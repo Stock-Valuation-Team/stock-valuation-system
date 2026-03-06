@@ -5,10 +5,6 @@ def get_holding_data():
     holdings_data = get_holdings()
     return holdings_data
 
-def get_universe_data():
-    universe_data = get_universe()
-    return universe_data
-
 if __name__ == "__main__":
     get_holding_data()
     holdings_result = get_holdings()
