@@ -1,3 +1,8 @@
+IDE= Intellij Community version
+Anconda with python 3.xx
+PostgresDB
+
+
 conda update conda
 conda create -n myenv anaconda
 conda env list
