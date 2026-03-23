@@ -43,11 +43,11 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.universe_custom
     OWNER to postgres;
 
--- Table: public.nifty50_universe
+-- Table: public.nifty100_universe
 
--- DROP TABLE IF EXISTS public.nifty50_universe;
+-- DROP TABLE IF EXISTS public.nifty100_universe;
 
-CREATE TABLE IF NOT EXISTS public.nifty50_universe
+CREATE TABLE IF NOT EXISTS public.nifty100_universe
 (
     symbol text COLLATE pg_catalog."default",
     stock text COLLATE pg_catalog."default",
@@ -56,15 +56,15 @@ CREATE TABLE IF NOT EXISTS public.nifty50_universe
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.nifty50_universe
+ALTER TABLE IF EXISTS public.nifty100_universe
     OWNER to postgres;
 
 
--- Table: public.nifty50_constituents
+-- Table: public.nifty100_constituents
 
--- DROP TABLE IF EXISTS public.nifty50_constituents;
+-- DROP TABLE IF EXISTS public.nifty100_constituents;
 
-CREATE TABLE IF NOT EXISTS public.nifty50_constituents
+CREATE TABLE IF NOT EXISTS public.nifty100_constituents
 (
     symbol text COLLATE pg_catalog."default",
     identifier text COLLATE pg_catalog."default",
@@ -88,5 +88,5 @@ CREATE TABLE IF NOT EXISTS public.nifty50_constituents
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.nifty50_constituents
+ALTER TABLE IF EXISTS public.nifty100_constituents
     OWNER to postgres;

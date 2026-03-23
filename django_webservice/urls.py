@@ -22,9 +22,9 @@ from application.modules import simple_view
 from application.modules import app_view
 from application.modules import post_request_view
 from controller.holdings_controller import holdings_info, holdings_analytics
-from controller.universe_controller import  universe_analytics, universe_info_nifty50, \
+from controller.universe_controller import  universe_analytics, universe_info_nifty100, \
     universe_info_custom, universe_info_combined
-from controller.Index_controller import nifty50_info
+from controller.Index_controller import nifty100_info
 
 
 urlpatterns = [
@@ -32,11 +32,11 @@ urlpatterns = [
     path('', app_view.index, name='index'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
     path("show_holdings_analytics/", holdings_analytics, name = 'holdings_analytics'),
-    path("universe_info_nifty50/", universe_info_nifty50, name = 'universe_info'),
+    path("universe_info_nifty100/", universe_info_nifty100, name = 'universe_info'),
     path("universe_info_custom/", universe_info_custom, name = 'universe_info'),
     path("universe_info_combined/", universe_info_combined, name = 'universe_info'),
 
     path("", universe_analytics, name = 'universe_analytics'),
-    path("nifty50_data/", nifty50_info, name = 'nifty50_info'),
+    path("nifty100_data/", nifty100_info, name = 'nifty100_info'),
 
 ]

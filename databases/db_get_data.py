@@ -24,10 +24,10 @@ def get_holdings():
     return result_maps
 
 
-def get_nifty50_data():
+def get_nifty100_data():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM nifty50_constituents")
+    cursor.execute("SELECT * FROM nifty100_constituents")
     column_names = [description[0] for description in cursor.description]
     rows = cursor.fetchall()
     result_maps = [dict(zip(column_names, row)) for row in rows]
