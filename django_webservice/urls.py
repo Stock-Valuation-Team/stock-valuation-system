@@ -25,6 +25,7 @@ from controller.holdings_controller import holdings_info, holdings_analytics
 from controller.universe_controller import  universe_analytics, universe_info_nifty100, \
     universe_info_custom, universe_info_combined
 from controller.Index_controller import nifty100_info
+from controller.optimizer_controller import optimizer_view
 
 
 urlpatterns = [
@@ -38,5 +39,6 @@ urlpatterns = [
 
     path("", universe_analytics, name = 'universe_analytics'),
     path("nifty100_data/", nifty100_info, name = 'nifty100_info'),
+    path("optimizer/", optimizer_view, name = 'optimizer'),
 
 ]

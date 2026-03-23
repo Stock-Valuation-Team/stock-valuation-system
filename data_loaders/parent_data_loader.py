@@ -1,6 +1,7 @@
 from data_loaders.universe_loader import load_universe_data
 from data_loaders.yfinance_data import load_live_quotes_from_yfinance
 from data_loaders.nse_data import  refresh_nifty100_constituents_data
+from data_loaders.news_loader import refresh_stock_news
 
 
 # delete from universe_custom;
@@ -26,6 +27,7 @@ def refresh_all_data():
     load_live_quotes_from_yfinance('1d', 'live_prices_yfinance')
     load_live_quotes_from_yfinance('1y', 'hist_prices_yfinance')
     refresh_nifty100_constituents_data()
+    refresh_stock_news()
 
 
 if __name__ == '__main__':
