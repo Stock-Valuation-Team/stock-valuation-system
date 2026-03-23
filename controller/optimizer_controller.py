@@ -34,6 +34,8 @@ def optimizer_view(request):
                 context['result'] = result
         except ValueError as ve:
             context['error'] = str(ve)
+        except ImportError as ie:
+            context['error'] = str(ie)
         except Exception as e:
             context['error'] = f'Optimization failed: {str(e)}'
 

@@ -260,6 +260,18 @@ tr:hover {
 .action-sell { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 .action-hold { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
 </style>
+<!-- Form Script for Loading Text -->
+<script>
+    function showLoading() {
+        const btn = document.getElementById('optimize-btn');
+        const loader = document.getElementById('loading-text');
+        
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btn.innerText = 'Optimizing...';
+        loader.style.display = 'block';
+    }
+</script>
 </head>
 <body>
 
@@ -304,13 +316,16 @@ tr:hover {
         <p style="color: #666; margin-bottom: 20px;">
             Suggests how you can optimize your current hold-ings by picking the mathematically optimal portfolio across the <strong>entire universe</strong> using the Markowitz Mean-Variance framework.
         </p>
-        <form method="POST">
+        <form method="POST" onsubmit="showLoading()">
             <div class="form-row">
                 <div class="form-group">
                     <label>Optimization Strategy</label>
                     <select name="strategy">
                         <option value="traditional" {% if strategy == 'traditional' %}selected{% endif %}>
                             Traditional Method (Max Sharpe Ratio)
+                        </option>
+                        <option value="ai_signals" {% if strategy == 'ai_signals' %}selected{% endif %}>
+                            AI Signals (FinBERT Sentiment + Markowitz)
                         </option>
                         <option value="min_volatility" {% if strategy == 'min_volatility' %}selected{% endif %}>
                             Minimum Volatility (Most Conservative)
@@ -319,11 +334,15 @@ tr:hover {
                 </div>
                 <div class="form-group">
                     <label>Total Portfolio Value (&#8377;)</label>
-                    <input type="number" name="total_value" value="{{ total_value }}" min="10000" step="10000">
+                    <input type="number" name="total_value" value="{{ total_value }}" min="1000" step="1000">
                 </div>
                 <div class="form-group" style="flex: 0;">
-                    <button type="submit" class="btn-optimize">Optimize</button>
+                    <button type="submit" id="optimize-btn" class="btn-optimize">Optimize</button>
                 </div>
+            </div>
+            <div id="loading-text" style="display: none; color: #0066cc; margin-top: 20px; font-weight: bold; background: #e6f2ff; padding: 15px; border-radius: 8px; border: 1px solid #b3d9ff;">
+                <span style="font-size: 20px; vertical-align: middle; margin-right: 10px;">&#8987;</span> 
+                <span style="vertical-align: middle;">Analyzing data and optimizing... This may take up to 60 seconds if AI models are running.</span>
             </div>
         </form>
     </div>

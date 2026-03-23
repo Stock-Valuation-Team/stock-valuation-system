@@ -1,11 +1,12 @@
 import pandas as pd
 from databases.db_connection import get_db_connection
 from services.holding_service import get_holding_data
-from pypfopt.expected_returns import mean_historical_return
+from pypfopt.expected_returns import capm_return
 from pypfopt.risk_models import CovarianceShrinkage
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
 from pypfopt import objective_functions
+from services.ai_sentiment_service import get_stock_sentiments
 
 
 def get_price_dataframe():
@@ -16,7 +17,7 @@ def get_price_dataframe():
     """
     conn = get_db_connection()
     query = """
-        SELECT ticker, price_date, close
+        SELECT symbol as ticker, price_date, close
         FROM hist_prices_yfinance
         ORDER BY price_date
     """
@@ -48,22 +49,46 @@ def get_optimized_portfolio(strategy='traditional', total_value=100000):
     if price_df is None or price_df.shape[1] < 2:
         raise ValueError("Not enough historical data available in the database. Optimization requires at least 2 valid stocks with price history.")
 
-    # Compute expected returns and covariance matrix
-    mu = mean_historical_return(price_df)
+    # Compute expected returns using the Capital Asset Pricing Model (CAPM) for more realistic market-benchmarked projections
+    mu = capm_return(price_df)
     S = CovarianceShrinkage(price_df).ledoit_wolf()
 
+    # Apply AI Sentiment adjustment if requested
+    if strategy == 'ai_signals':
+        try:
+            sentiment_scores = get_stock_sentiments()
+            strategy_name = 'AI Signals (FinBERT + Markowitz)'
+            
+            # Blend mathematically: We add a flat percentage to the expected return based on the AI.
+            # A score of +1.0 means +15% expected return statically. 
+            # A score of -1.0 means -15% expected return statically.
+            # This causes a massive mathematical shift prioritizing highly-rated AI stocks over purely historical ones.
+            sentiment_impact_weight = 0.15
+            
+            for ticker in mu.index:
+                # Get score or neutral 0.0
+                ai_score = sentiment_scores.get(ticker, 0.0)
+                
+                # Formula: new_mu = old_mu + (ai_score * impact_weight)
+                mu[ticker] = mu[ticker] + (ai_score * sentiment_impact_weight)
+                
+        except ImportError as e:
+            raise e
+            
     # Run optimization
     ef = EfficientFrontier(mu, S)
-    # Add L2 regularization to encourage diversification
-    ef.add_objective(objective_functions.L2_reg, gamma=0.1)
 
     if strategy == 'min_volatility':
         ef.min_volatility()
-        strategy_name = 'Minimum Volatility'
-    else:
+        if strategy != 'ai_signals':
+            strategy_name = 'Minimum Volatility'
+    elif strategy == 'traditional':
         # 'traditional' maps to Maximum Sharpe Ratio
         ef.max_sharpe()
         strategy_name = 'Traditional (Max Sharpe)'
+    elif strategy == 'ai_signals':
+        ef.max_sharpe()
+        # strategy_name already set above
 
     cleaned_weights = ef.clean_weights()
     performance = ef.portfolio_performance(verbose=False)
