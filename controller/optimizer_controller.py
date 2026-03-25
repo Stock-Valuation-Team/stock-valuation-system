@@ -11,20 +11,23 @@ def optimizer_view(request):
         'error': None,
         'strategy': 'traditional',
         'total_value': 100000,
+        'universe': 'combined',
     }
 
     if request.method == 'POST':
         strategy = request.POST.get('strategy', 'traditional')
+        universe = request.POST.get('universe', 'combined')
         try:
             total_value = float(request.POST.get('total_value', 100000))
         except ValueError:
             total_value = 100000
 
         context['strategy'] = strategy
+        context['universe'] = universe
         context['total_value'] = int(total_value)
 
         try:
-            result = get_optimized_portfolio(strategy, total_value)
+            result = get_optimized_portfolio(strategy, total_value, universe)
             if result is None:
                 context['error'] = 'No historical price data available. Please run the data loader first.'
             else:

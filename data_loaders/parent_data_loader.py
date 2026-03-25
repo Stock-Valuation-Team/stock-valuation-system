@@ -24,6 +24,7 @@ def refresh_all_data():
     #Load all data
     load_universe_data('nifty100', 'custom_universe.csv', 'universe_custom')
     load_universe_data('custom', 'nifty100_universe.csv', 'universe_nifty100')
+    load_universe_data('nifty50', 'nifty50_universe.csv', 'universe_nifty50')
     load_live_quotes_from_yfinance('1d', 'live_prices_yfinance')
     load_live_quotes_from_yfinance('1y', 'hist_prices_yfinance')
     refresh_nifty100_constituents_data()

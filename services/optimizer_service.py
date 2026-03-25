@@ -2,19 +2,27 @@ import pandas as pd
 from databases.db_connection import get_db_connection
 from services.holding_service import get_holding_data
 from pypfopt.expected_returns import capm_return
-from pypfopt.risk_models import CovarianceShrinkage
+from pypfopt.risk_models import CovarianceShrinkage, exp_cov
 from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
 from pypfopt import objective_functions
+from pypfopt.black_litterman import BlackLittermanModel
 from services.ai_sentiment_service import get_stock_sentiments
 
 
-def get_price_dataframe():
+def get_price_dataframe(universe='combined'):
     """
     Fetches historical close prices from hist_prices_yfinance table
-    for all available universe stocks, and pivots into a DataFrame 
+    for stocks in the chosen universe, and pivots into a DataFrame 
     suitable for PyPortfolioOpt.
     """
+    # Get the list of symbols for the chosen universe
+    from services.universe_service import get_universe_data
+    universe_data = get_universe_data(universe)
+    if not universe_data:
+        return None
+    universe_symbols = set(row['symbol'] for row in universe_data)
+
     conn = get_db_connection()
     query = """
         SELECT symbol as ticker, price_date, close
@@ -23,6 +31,12 @@ def get_price_dataframe():
     """
     df = pd.read_sql(query, conn, parse_dates=['price_date'])
     conn.close()
+
+    if df.empty:
+        return None
+
+    # Filter to only the symbols that belong to the chosen universe index
+    df = df[df['ticker'].isin(universe_symbols)]
 
     if df.empty:
         return None
@@ -40,55 +54,70 @@ def get_price_dataframe():
     return price_df
 
 
-def get_optimized_portfolio(strategy='traditional', total_value=100000):
+def get_optimized_portfolio(strategy='traditional', total_value=100000, universe='combined'):
     """
-    Runs portfolio optimization using PyPortfolioOpt for the universe.
+    Runs portfolio optimization using PyPortfolioOpt for the chosen universe.
     """
-    price_df = get_price_dataframe()
+    price_df = get_price_dataframe(universe)
 
     if price_df is None or price_df.shape[1] < 2:
         raise ValueError("Not enough historical data available in the database. Optimization requires at least 2 valid stocks with price history.")
 
     # Compute expected returns using the Capital Asset Pricing Model (CAPM) for more realistic market-benchmarked projections
     mu = capm_return(price_df)
-    S = CovarianceShrinkage(price_df).ledoit_wolf()
+    # Use exponentially-weighted covariance matrix — gives more importance to recent market conditions
+    S = exp_cov(price_df, span=180)
 
-    # Apply AI Sentiment adjustment if requested
-    if strategy == 'ai_signals':
+    # --- The Unified Black-Litterman AI Strategy ---
+    if strategy == 'black_litterman':
         try:
+            strategy_name = 'Black-Litterman AI Model (FinBERT x CAPM)'
             sentiment_scores = get_stock_sentiments()
-            strategy_name = 'AI Signals (FinBERT + Markowitz)'
             
-            # Blend mathematically: We add a flat percentage to the expected return based on the AI.
-            # A score of +1.0 means +15% expected return statically. 
-            # A score of -1.0 means -15% expected return statically.
-            # This causes a massive mathematical shift prioritizing highly-rated AI stocks over purely historical ones.
+            # Step 1: Establish Absolute Views
+            # We map FinBERT NLP sentiment (-1.0 to 1.0) into expected absolute returns.
+            # If a base math stock expects 12%, and sentiment is strong (+1.0), view = 12% + 15% = 27%.
+            view_dict = {}
             sentiment_impact_weight = 0.15
             
             for ticker in mu.index:
-                # Get score or neutral 0.0
                 ai_score = sentiment_scores.get(ticker, 0.0)
+                if ai_score != 0.0:
+                    # Absolute View = Base CAPM Return + AI Sentiment Impact
+                    view_dict[ticker] = mu[ticker] + (ai_score * sentiment_impact_weight)
+
+            # Step 2: The Black-Litterman Model
+            # Blends the prior (CAPM math) with our views (AI Sentiment) weighted by confidence
+            if len(view_dict) > 0:
+                bl = BlackLittermanModel(S, pi=mu, absolute_views=view_dict)
+                bl_return = bl.bl_returns()
+                bl_cov = bl.bl_cov()
+            else:
+                bl_return = mu
+                bl_cov = S
                 
-                # Formula: new_mu = old_mu + (ai_score * impact_weight)
-                mu[ticker] = mu[ticker] + (ai_score * sentiment_impact_weight)
-                
+            # Step 3: Run the optimizer with the posterior BL returns and covariance
+            ef = EfficientFrontier(bl_return, bl_cov)
+            ef.add_objective(objective_functions.L2_reg, gamma=0.1) # Strict diversification
+            ef.max_sharpe()
+            
         except ImportError as e:
             raise e
             
-    # Run optimization
-    ef = EfficientFrontier(mu, S)
+    else:
+        # --- MVO-based strategies (Traditional, Min Volatility) ---
+        ef = EfficientFrontier(mu, S)
 
-    if strategy == 'min_volatility':
-        ef.min_volatility()
-        if strategy != 'ai_signals':
+        # Add L2 regularization for Traditional method to encourage diversification
+        if strategy == 'traditional':
+            ef.add_objective(objective_functions.L2_reg, gamma=0.1)
+
+        if strategy == 'min_volatility':
+            ef.min_volatility()
             strategy_name = 'Minimum Volatility'
-    elif strategy == 'traditional':
-        # 'traditional' maps to Maximum Sharpe Ratio
-        ef.max_sharpe()
-        strategy_name = 'Traditional (Max Sharpe)'
-    elif strategy == 'ai_signals':
-        ef.max_sharpe()
-        # strategy_name already set above
+        elif strategy == 'traditional':
+            ef.max_sharpe()
+            strategy_name = 'Traditional (CAPM + Max Sharpe)'
 
     cleaned_weights = ef.clean_weights()
     performance = ef.portfolio_performance(verbose=False)
@@ -96,7 +125,7 @@ def get_optimized_portfolio(strategy='traditional', total_value=100000):
     # Filter out zero-weight stocks
     non_zero_weights = {k: v for k, v in cleaned_weights.items() if v > 0}
 
-    # Discrete allocation — how many shares to actually buy
+    # Discrete allocation
     latest_prices = get_latest_prices(price_df)
     da = DiscreteAllocation(cleaned_weights, latest_prices, total_portfolio_value=total_value)
     allocation, leftover = da.lp_portfolio()
