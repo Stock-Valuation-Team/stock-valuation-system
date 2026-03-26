@@ -10,21 +10,25 @@ def load_live_quotes_from_yfinance(period, table_name):
 
 def get_live_quotes_from_yfinance(period):
     universe_data = get_universe_data('combined')
-    stocks = []
-    for row in universe_data:
-        stocks.append(row['ticker'])
     quotes = []
     for univ_data in universe_data:
         symbol = univ_data['symbol']
         stock = univ_data['stock']
         ticker = univ_data['ticker']
-        quote = []
-        meta = yf.Ticker(ticker)
-        data = meta.history(period=period)
-        for row in data.itertuples():
-            row_ins = (symbol, stock, ticker, row.Index, row.Open, row.High,
-                       row.Low, row.Close, row.Volume, row.Dividends)
-            quotes.append(row_ins)
+        yf_ticker = symbol + '.NS'  # NSE ticker format for yfinance
+        try:
+            meta = yf.Ticker(yf_ticker)
+            data = meta.history(period=period)
+            if data.empty:
+                print(f'  No data for {symbol}, skipping...')
+                continue
+            for row in data.itertuples():
+                row_ins = (symbol, stock, ticker, row.Index, row.Open, row.High,
+                           row.Low, row.Close, row.Volume, row.Dividends)
+                quotes.append(row_ins)
+            print(f'  Loaded {len(data)} rows for {symbol}')
+        except Exception as e:
+            print(f'  Error fetching {symbol}: {e}, skipping...')
     return quotes
 
 

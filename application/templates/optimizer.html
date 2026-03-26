@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+h2, p {
+  margin: 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #38444d;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.optimizer-form {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.optimizer-form h2 {
+  margin: 0 0 20px 0;
+  color: #38444d;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #555;
+  font-size: 13px;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.btn-optimize {
+  background-color: #38444d;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.btn-optimize:hover {
+  background-color: #2c363e;
+}
+
+.results-section {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.results-section h3 {
+  margin: 0 0 15px 0;
+  color: #38444d;
+  border-bottom: 2px solid #38444d;
+  padding-bottom: 8px;
+}
+
+.performance-cards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.perf-card {
+  flex: 1;
+  min-width: 180px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 18px;
+  text-align: center;
+  border-left: 4px solid #38444d;
+}
+
+.perf-card .label {
+  font-size: 12px;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.perf-card .value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #38444d;
+  margin-top: 5px;
+}
+
+.perf-card .value.positive { color: #28a745; }
+.perf-card .value.negative { color: #dc3545; }
+
+table {
+  font-size: 13px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  font-style: normal;
+  font-weight: normal;
+}
+
+th {
+  background-color: #38444d;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e8e8e8;
+}
+
+.weight-bar {
+  background-color: #e9ecef;
+  border-radius: 3px;
+  height: 18px;
+  position: relative;
+}
+
+.weight-bar-fill {
+  background-color: #38444d;
+  height: 100%;
+  border-radius: 3px;
+  min-width: 2px;
+}
+
+.error-msg {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+}
+
+.info-msg {
+  background: #d1ecf1;
+  color: #0c5460;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #bee5eb;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.strategy-badge {
+  display: inline-block;
+  background: #38444d;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.action-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.action-buy { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.action-sell { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.action-hold { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
+</style>
+<!-- Form Script for Loading Text -->
+<script>
+    function showLoading() {
+        const btn = document.getElementById('optimize-btn');
+        const loader = document.getElementById('loading-text');
+        
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btn.innerText = 'Optimizing...';
+        loader.style.display = 'block';
+    }
+</script>
+</head>
+<body>
+
+<ul>
+    <li><a href="../">Home</a></li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Holdings</a>
+        <div class="dropdown-content">
+            <a href="../show_holdings/">Holding Details</a>
+            <a href="../show_holdings_analytics/">Holding Analytics</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Universe</a>
+        <div class="dropdown-content">
+            <a href="../universe_info_nifty50/">Nifty50</a>
+            <a href="../universe_info_nifty100/">Nifty100</a>
+            <a href="../universe_info_custom/">Custom</a>
+            <a href="../universe_info_combined/">Combined Universe</a>
+        </div>
+    </li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">Index</a>
+        <div class="dropdown-content">
+            <a href="../nifty100_data/">Nifty100 Analytics</a>
+            <a href="">Nifty500 Analytics</a>
+        </div>
+    </li>
+    <li><a href="../">Bond Analytics</a></li>
+    <li><a href="../">Dividend Analytics</a></li>
+    <li><a href="../">FII Analytics</a></li>
+    <li><a href="../">Nifty100 Analytics</a></li>
+    <li><a href="../">Nifty500 Analytics</a></li>
+    <li><a href="../">AI Reports</a></li>
+    <li><a href="../optimizer/" style="background-color: red;">Optimizer</a></li>
+</ul>
+
+<div class="container">
+
+    <!-- Optimizer Form -->
+    <div class="optimizer-form">
+        <h2>&#128200; Portfolio Optimizer</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            Suggests how you can optimize your current hold-ings by picking the mathematically optimal portfolio across the <strong>entire universe</strong> using the Markowitz Mean-Variance framework.
+        </p>
+        <form method="POST" onsubmit="showLoading()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Optimization Strategy</label>
+                    <select name="strategy">
+                        <option value="traditional" {% if strategy == 'traditional' %}selected{% endif %}>
+                            Traditional Method (Max Sharpe Ratio)
+                        </option>
+                        <option value="black_litterman" {% if strategy == 'black_litterman' %}selected{% endif %}>
+                            Unified AI Model (Black-Litterman + FinBERT)
+                        </option>
+                        <option value="min_volatility" {% if strategy == 'min_volatility' %}selected{% endif %}>
+                            Minimum Volatility (Most Conservative)
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stock Universe</label>
+                    <select name="universe">
+                        <option value="combined" {% if universe == 'combined' %}selected{% endif %}>Combined (All Stocks)</option>
+                        <option value="nifty100" {% if universe == 'nifty100' %}selected{% endif %}>Nifty 100</option>
+                        <option value="nifty50" {% if universe == 'nifty50' %}selected{% endif %}>Nifty 50</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Total Portfolio Value (&#8377;)</label>
+                    <input type="number" name="total_value" value="{{ total_value }}" min="1000" step="1000">
+                </div>
+                <div class="form-group" style="flex: 0;">
+                    <button type="submit" id="optimize-btn" class="btn-optimize">Optimize</button>
+                </div>
+            </div>
+            <div id="loading-text" style="display: none; color: #0066cc; margin-top: 20px; font-weight: bold; background: #e6f2ff; padding: 15px; border-radius: 8px; border: 1px solid #b3d9ff;">
+                <span style="font-size: 20px; vertical-align: middle; margin-right: 10px;">&#8987;</span> 
+                <span style="vertical-align: middle;">Analyzing data and optimizing... This may take up to 60 seconds if AI models are running.</span>
+            </div>
+        </form>
+    </div>
+
+    {% if error %}
+    <div class="error-msg">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    {% if result %}
+
+    <!-- Performance Metrics -->
+    <div class="results-section">
+        <h3>Performance Metrics
+            <span class="strategy-badge">{{ result.strategy_name }}</span>
+        </h3>
+        <div class="performance-cards">
+            <div class="perf-card">
+                <div class="label">Expected Annual Return</div>
+                <div class="value {% if result.performance.expected_return > 0 %}positive{% else %}negative{% endif %}">
+                    {{ result.performance.expected_return }}%
+                </div>
+            </div>
+            <div class="perf-card">
+                <div class="label">Annual Volatility</div>
+                <div class="value">{{ result.performance.annual_volatility }}%</div>
+            </div>
+            <div class="perf-card">
+                <div class="label">Sharpe Ratio</div>
+                <div class="value {% if result.performance.sharpe_ratio > 1 %}positive{% elif result.performance.sharpe_ratio < 0 %}negative{% endif %}">
+                    {{ result.performance.sharpe_ratio }}
+                </div>
+            </div>
+            <div class="perf-card">
+                <div class="label">Stocks Analyzed</div>
+                <div class="value">{{ result.num_stocks_analyzed }}</div>
+            </div>
+        </div>
+
+        <div class="info-msg">
+            <strong>How to read this:</strong>
+            The optimizer analyzed {{ result.num_stocks_analyzed }} stocks from the universe and suggests a portfolio of <strong>{{ result.weights_list|length }}</strong> top performing stocks to better optimize your investments.
+            Expected return is <strong>{{ result.performance.expected_return }}%</strong> annually
+            with a volatility of <strong>{{ result.performance.annual_volatility }}%</strong>.
+            A Sharpe Ratio above 1.0 is generally considered good.
+        </div>
+    </div>
+
+    <!-- Optimal Weights -->
+    <div class="results-section">
+        <h3>Suggested Portfolio Weights</h3>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Stock (Ticker)</th>
+                <th>Weight (%)</th>
+                <th>Allocation</th>
+            </tr>
+            {% for stock, weight in result.weights_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a target="_blank" href="https://www.screener.in/company/{{ stock }}/consolidated/"
+                       style="color: #0066cc; text-decoration: none;">{{ stock }}</a>
+                </td>
+                <td><strong>{{ weight }}%</strong></td>
+                <td>
+                    <div class="weight-bar" style="width: 200px;">
+                        <div class="weight-bar-fill" style="width: {{ weight }}%;"></div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Rebalancing Actions -->
+    {% if result.rebalance_actions %}
+    <div class="results-section">
+        <h3>Action Plan: How to Rebalance (Target: &#8377;{{ result.total_value|floatformat:0 }})</h3>
+        <p style="color: #666; margin-bottom: 15px;">
+            Based on the optimal mathematically calculated portfolio and your <strong>current holdings</strong>, here is exactly what you need to do:
+        </p>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Stock (Ticker)</th>
+                <th>Action</th>
+                <th>Quantity</th>
+            </tr>
+            {% for item in result.rebalance_actions %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a target="_blank" href="https://www.screener.in/company/{{ item.stock }}/consolidated/"
+                       style="color: #0066cc; text-decoration: none;">{{ item.stock }}</a>
+                </td>
+                <td>
+                    <span class="action-badge 
+                        {% if 'BUY' in item.action %}action-buy
+                        {% elif 'SELL' in item.action %}action-sell
+                        {% else %}action-hold{% endif %}">
+                        {{ item.action }}
+                    </span>
+                </td>
+                <td><strong>{{ item.qty }}</strong> shares</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p style="color: #888; margin-top: 10px; font-size: 12px;">
+            Estimated leftover cash after rebalancing: &#8377;{{ result.leftover }}
+        </p>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

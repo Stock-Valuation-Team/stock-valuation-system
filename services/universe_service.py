@@ -3,13 +3,16 @@ from databases.db_get_data import get_universe
 
 
 def get_universe_data(universe_name):
-    if universe_name == 'nifty50':
+    if universe_name == 'nifty100':
+        data_source = "SELECT * FROM universe_nifty100"
+    elif universe_name == 'nifty50':
         data_source = "SELECT * FROM universe_nifty50"
     elif universe_name == 'custom':
         data_source = "SELECT * FROM universe_custom"
-    elif  universe_name == 'combined':
-        data_source = "select * from universe_custom\
-                        UNION select * from universe_nifty50"
+    elif universe_name == 'combined':
+        data_source = "SELECT * FROM universe_custom \
+                        UNION SELECT * FROM universe_nifty100 \
+                        UNION SELECT * FROM universe_nifty50"
     else:
         return []
 
@@ -24,5 +27,5 @@ def get_universe_data_field(universe_name, filed_name):
     return fields
 
 if __name__ == '__main__':
-    universe_data = get_universe_data_field('nifty50', 'ticker')
+    universe_data = get_universe_data_field('nifty100', 'ticker')
     print()

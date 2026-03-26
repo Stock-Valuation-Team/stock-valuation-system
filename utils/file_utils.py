@@ -1,8 +1,9 @@
 import csv
+from pathlib import Path
 
 def get_data_from_csv(filename):
-    data_folder = '../data/'
-    file_name = data_folder + filename
+    root_folder = Path(__file__).parents[1]
+    file_name = root_folder / "data" / filename
     print ('loading data from csv file')
     data = []
     # Using 'with open()' ensures the file is closed automatically

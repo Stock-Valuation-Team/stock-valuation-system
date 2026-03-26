@@ -26,5 +26,5 @@ def prepare_universe_data(filename):
 
 
 if __name__ == '__main__':
-    load_universe_data('nifty50', 'custom_universe.csv', 'universe_custom');
-    load_universe_data('custom', 'nifty50_universe.csv', 'universe_nifty50');
+    load_universe_data('nifty100', 'custom_universe.csv', 'universe_custom');
+    load_universe_data('custom', 'nifty100_universe.csv', 'universe_nifty100');
