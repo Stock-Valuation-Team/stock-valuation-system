@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ page_title }}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: #f1f5f9;
+            color: #111827;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #1f2937;
+        }
+        li { float: left; }
+        li a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover { background-color: #0f766e; }
+        .page {
+            max-width: 1100px;
+            margin: 16px auto;
+            padding: 0 16px;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        h2 { margin: 4px 0 8px 0; }
+        h3 { margin: 0 0 10px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .statement th, .statement td {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 10px 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .statement th {
+            color: #6b7280;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .statement td:last-child,
+        .statement th:last-child {
+            text-align: right;
+        }
+        .statement td:nth-child(2),
+        .statement th:nth-child(2) {
+            text-align: right;
+        }
+        .positive { color: #15803d; font-weight: 600; }
+        .negative { color: #dc2626; font-weight: 600; }
+        .neutral { color: #6b7280; font-weight: 600; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .error {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+        .summary {
+            line-height: 1.45;
+            white-space: pre-line;
+        }
+        .pill {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 8px;
+            padding: 4px 10px;
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .meta-line {
+            color: #374151;
+            margin: 4px 0;
+        }
+        .switch-bar {
+            display: inline-flex;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .switch-btn {
+            border: none;
+            background: #ffffff;
+            color: #334155;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .switch-btn.active {
+            background: #0f766e;
+            color: #ffffff;
+        }
+        .period-panel {
+            display: none;
+        }
+        .period-panel.active {
+            display: block;
+        }
+        .chart-wrap {
+            width: 100%;
+            height: 260px;
+            margin: 8px 0 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/show_holdings_analytics/">Back To Holdings Analytics</a></li>
+</ul>
+
+<div class="page">
+    <div class="card">
+        <h2>{{ page_title }}</h2>
+        <p class="meta-line"><b>Symbol:</b> {{ symbol }} | <b>Ticker:</b> {{ ticker }}</p>
+        <span class="pill">All major amount fields are shown in INR Crores</span>
+        {% if error %}
+            <p class="error">Live data fetch issue: {{ error }}</p>
+        {% endif %}
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Company Details</h3>
+            <table>
+                <tr><th>Company Name</th><td>{{ company_profile.company_name }}</td></tr>
+                <tr><th>Sector</th><td>{{ company_profile.sector }}</td></tr>
+                <tr><th>Industry</th><td>{{ company_profile.industry }}</td></tr>
+                <tr><th>Country</th><td>{{ company_profile.country }}</td></tr>
+                <tr><th>Website</th><td><a href="{{ company_profile.website }}" target="_blank">{{ company_profile.website }}</a></td></tr>
+                <tr><th>Employees</th><td>{{ company_profile.employees }}</td></tr>
+            </table>
+        </div>
+        <div class="card">
+            <h3>Financial Ratios</h3>
+            <table>
+                <tr><th>Market Cap</th><td>{{ financial_ratios.market_cap }}</td></tr>
+                <tr><th>Enterprise Value</th><td>{{ financial_ratios.enterprise_value }}</td></tr>
+                <tr><th>Trailing P/E</th><td>{{ financial_ratios.trailing_pe }}</td></tr>
+                <tr><th>Forward P/E</th><td>{{ financial_ratios.forward_pe }}</td></tr>
+                <tr><th>Price To Book</th><td>{{ financial_ratios.price_to_book }}</td></tr>
+                <tr><th>Debt To Equity</th><td>{{ financial_ratios.debt_to_equity }}</td></tr>
+                <tr><th>Current Ratio</th><td>{{ financial_ratios.current_ratio }}</td></tr>
+                <tr><th>Quick Ratio</th><td>{{ financial_ratios.quick_ratio }}</td></tr>
+                <tr><th>ROE</th><td>{{ financial_ratios.return_on_equity }}</td></tr>
+                <tr><th>ROA</th><td>{{ financial_ratios.return_on_assets }}</td></tr>
+                <tr><th>Gross Margin</th><td>{{ financial_ratios.gross_margin }}</td></tr>
+                <tr><th>Operating Margin</th><td>{{ financial_ratios.operating_margin }}</td></tr>
+                <tr><th>Profit Margin</th><td>{{ financial_ratios.profit_margin }}</td></tr>
+                <tr><th>Dividend Yield</th><td>{{ financial_ratios.dividend_yield }}</td></tr>
+                <tr><th>Payout Ratio</th><td>{{ financial_ratios.payout_ratio }}</td></tr>
+                <tr><th>Beta</th><td>{{ financial_ratios.beta }}</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Business Summary</h3>
+        <div class="summary">{{ company_profile.business_summary }}</div>
+    </div>
+
+    <div class="card">
+        <h3>{{ income_annual.title }}</h3>
+        <div class="switch-bar">
+            <button class="switch-btn active" onclick="switchPeriod('income', 'annual', this)">Annual</button>
+            <button class="switch-btn" onclick="switchPeriod('income', 'quarterly', this)">Quarterly</button>
+        </div>
+        <div id="income-annual" class="period-panel active">
+            <div class="chart-wrap"><canvas id="income-annual-chart"></canvas></div>
+            <table class="statement">
+                <thead>
+                    <tr>
+                        <th>(INR Cr)</th>
+                        <th>{{ income_annual.latest_period }}</th>
+                        <th>Y/Y Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in income_annual.rows %}
+                    <tr>
+                        <td>{{ row.metric }}</td>
+                        <td>{{ row.value }}</td>
+                        {% if row.yoy|slice:':1' == '↑' %}
+                        <td class="positive">{{ row.yoy }}</td>
+                        {% elif row.yoy|slice:':1' == '↓' %}
+                        <td class="negative">{{ row.yoy }}</td>
+                        {% else %}
+                        <td class="neutral">{{ row.yoy }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="income-quarterly" class="period-panel">
+            <div class="chart-wrap"><canvas id="income-quarterly-chart"></canvas></div>
+            <table class="statement">
+                <thead>
+                    <tr>
+                        <th>(INR Cr)</th>
+                        <th>{{ income_quarterly.latest_period }}</th>
+                        <th>Q/Q Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in income_quarterly.rows %}
+                    <tr>
+                        <td>{{ row.metric }}</td>
+                        <td>{{ row.value }}</td>
+                        {% if row.yoy|slice:':1' == '↑' %}
+                        <td class="positive">{{ row.yoy }}</td>
+                        {% elif row.yoy|slice:':1' == '↓' %}
+                        <td class="negative">{{ row.yoy }}</td>
+                        {% else %}
+                        <td class="neutral">{{ row.yoy }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>{{ cashflow_annual.title }}</h3>
+        <div class="switch-bar">
+            <button class="switch-btn active" onclick="switchPeriod('cashflow', 'annual', this)">Annual</button>
+            <button class="switch-btn" onclick="switchPeriod('cashflow', 'quarterly', this)">Quarterly</button>
+        </div>
+        <div id="cashflow-annual" class="period-panel active">
+            <div class="chart-wrap"><canvas id="cashflow-annual-chart"></canvas></div>
+            <table class="statement">
+                <thead>
+                    <tr>
+                        <th>(INR Cr)</th>
+                        <th>{{ cashflow_annual.latest_period }}</th>
+                        <th>Y/Y Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in cashflow_annual.rows %}
+                    <tr>
+                        <td>{{ row.metric }}</td>
+                        <td>{{ row.value }}</td>
+                        {% if row.yoy|slice:':1' == '↑' %}
+                        <td class="positive">{{ row.yoy }}</td>
+                        {% elif row.yoy|slice:':1' == '↓' %}
+                        <td class="negative">{{ row.yoy }}</td>
+                        {% else %}
+                        <td class="neutral">{{ row.yoy }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="cashflow-quarterly" class="period-panel">
+            <div class="chart-wrap"><canvas id="cashflow-quarterly-chart"></canvas></div>
+            <table class="statement">
+                <thead>
+                    <tr>
+                        <th>(INR Cr)</th>
+                        <th>{{ cashflow_quarterly.latest_period }}</th>
+                        <th>Q/Q Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in cashflow_quarterly.rows %}
+                    <tr>
+                        <td>{{ row.metric }}</td>
+                        <td>{{ row.value }}</td>
+                        {% if row.yoy|slice:':1' == '↑' %}
+                        <td class="positive">{{ row.yoy }}</td>
+                        {% elif row.yoy|slice:':1' == '↓' %}
+                        <td class="negative">{{ row.yoy }}</td>
+                        {% else %}
+                        <td class="neutral">{{ row.yoy }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>{{ balance_annual.title }}</h3>
+        <div class="switch-bar">
+            <button class="switch-btn active" onclick="switchPeriod('balance', 'annual', this)">Annual</button>
+            <button class="switch-btn" onclick="switchPeriod('balance', 'quarterly', this)">Quarterly</button>
+        </div>
+        <div id="balance-annual" class="period-panel active">
+            <div class="chart-wrap"><canvas id="balance-annual-chart"></canvas></div>
+            <table class="statement">
+                <thead>
+                    <tr>
+                        <th>(INR Cr)</th>
+                        <th>{{ balance_annual.latest_period }}</th>
+                        <th>Y/Y Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in balance_annual.rows %}
+                    <tr>
+                        <td>{{ row.metric }}</td>
+                        <td>{{ row.value }}</td>
+                        {% if row.yoy|slice:':1' == '↑' %}
+                        <td class="positive">{{ row.yoy }}</td>
+                        {% elif row.yoy|slice:':1' == '↓' %}
+                        <td class="negative">{{ row.yoy }}</td>
+                        {% else %}
+                        <td class="neutral">{{ row.yoy }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="balance-quarterly" class="period-panel">
+            <div class="chart-wrap"><canvas id="balance-quarterly-chart"></canvas></div>
+            <table class="statement">
+                <thead>
+                    <tr>
+                        <th>(INR Cr)</th>
+                        <th>{{ balance_quarterly.latest_period }}</th>
+                        <th>Q/Q Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in balance_quarterly.rows %}
+                    <tr>
+                        <td>{{ row.metric }}</td>
+                        <td>{{ row.value }}</td>
+                        {% if row.yoy|slice:':1' == '↑' %}
+                        <td class="positive">{{ row.yoy }}</td>
+                        {% elif row.yoy|slice:':1' == '↓' %}
+                        <td class="negative">{{ row.yoy }}</td>
+                        {% else %}
+                        <td class="neutral">{{ row.yoy }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{{ income_annual_chart|json_script:"income-annual-chart-data" }}
+{{ income_quarterly_chart|json_script:"income-quarterly-chart-data" }}
+{{ cashflow_annual_chart|json_script:"cashflow-annual-chart-data" }}
+{{ cashflow_quarterly_chart|json_script:"cashflow-quarterly-chart-data" }}
+{{ balance_annual_chart|json_script:"balance-annual-chart-data" }}
+{{ balance_quarterly_chart|json_script:"balance-quarterly-chart-data" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+var chartInstances = {};
+
+function readChartData(dataId) {
+    var node = document.getElementById(dataId);
+    if (!node) {
+        return {labels: [], datasets: []};
+    }
+    try {
+        return JSON.parse(node.textContent);
+    } catch (e) {
+        return {labels: [], datasets: []};
+    }
+}
+
+function buildChart(canvasId, dataId) {
+    if (chartInstances[canvasId]) {
+        return;
+    }
+    var canvas = document.getElementById(canvasId);
+    if (!canvas) {
+        return;
+    }
+    var data = readChartData(dataId);
+    if (!data || !data.labels || data.labels.length === 0) {
+        return;
+    }
+
+    var colors = [
+        {bg: 'rgba(59, 130, 246, 0.75)', border: 'rgba(59, 130, 246, 1)'},
+        {bg: 'rgba(245, 158, 11, 0.75)', border: 'rgba(245, 158, 11, 1)'},
+        {bg: 'rgba(16, 185, 129, 0.75)', border: 'rgba(16, 185, 129, 1)'}
+    ];
+
+    var datasets = (data.datasets || []).map(function(ds, idx) {
+        var color = colors[idx % colors.length];
+        return {
+            label: ds.label,
+            data: ds.data,
+            backgroundColor: color.bg,
+            borderColor: color.border,
+            borderWidth: 1,
+            borderRadius: 4,
+            maxBarThickness: 34
+        };
+    });
+
+    chartInstances[canvasId] = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: data.labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    align: 'start'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var val = context.raw;
+                            if (val === null || val === undefined) {
+                                return context.dataset.label + ': -';
+                            }
+                            return context.dataset.label + ': ' + Number(val).toFixed(2) + ' Cr';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + ' Cr';
+                        }
+                    },
+                    grid: {
+                        color: '#e5e7eb'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+}
+
+function ensureSectionChart(section, period) {
+    var baseId = section + '-' + period;
+    buildChart(baseId + '-chart', baseId + '-chart-data');
+    if (chartInstances[baseId + '-chart']) {
+        chartInstances[baseId + '-chart'].resize();
+    }
+}
+
+function switchPeriod(section, period, el) {
+    var annual = document.getElementById(section + '-annual');
+    var quarterly = document.getElementById(section + '-quarterly');
+    if (!annual || !quarterly) {
+        return;
+    }
+
+    annual.classList.remove('active');
+    quarterly.classList.remove('active');
+    if (period === 'annual') {
+        annual.classList.add('active');
+    } else {
+        quarterly.classList.add('active');
+    }
+
+    var bar = el.parentElement;
+    if (bar) {
+        var btns = bar.querySelectorAll('.switch-btn');
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.remove('active');
+        }
+        el.classList.add('active');
+    }
+
+    ensureSectionChart(section, period);
+}
+
+ensureSectionChart('income', 'annual');
+ensureSectionChart('cashflow', 'annual');
+ensureSectionChart('balance', 'annual');
+</script>
+</body>
+</html>

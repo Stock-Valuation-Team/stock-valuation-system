@@ -1,5 +1,5 @@
 
-def db_data_to_html_table(db_data):
+def db_data_to_html_table(db_data, symbol_link_prefix=None):
     print('Converting Db data to HTML table..')
 
     if not db_data:
@@ -24,15 +24,26 @@ def db_data_to_html_table(db_data):
 
         # Add table contents
         for dict in db_data:
-            html_content = html_content + '<tr>'
+            row_symbol = str(dict.get('symbol', '-'))
+            if symbol_link_prefix and row_symbol not in ('-', 'TOTAL'):
+                row_url = symbol_link_prefix + row_symbol + '/'
+                html_content = html_content + '<tr style="cursor:pointer;" onclick="window.location.href=\'' + row_url + '\'">'
+            else:
+                html_content = html_content + '<tr>'
             for header in headers:
-                stock_name = str(dict[header])
-                print(dict[header])
+                value = dict[header]
+                stock_name = '-' if value is None else str(value)
+                print(value)
                 if header != 'symbol':
                     html_content = html_content + '<th>' + stock_name + '</th>'
                 else:
-                    html_content = html_content + '<th>' + '<a target="_blank" href="https://www.screener.in/company/' \
-                                   + stock_name + '/consolidated/">' + stock_name + '</a>' + '</th>'
+                    if stock_name == 'TOTAL' or stock_name == '-':
+                        html_content = html_content + '<th>' + stock_name + '</th>'
+                    elif symbol_link_prefix:
+                        html_content = html_content + '<th>' + '<a href="' + symbol_link_prefix + stock_name + '/">' + stock_name + '</a>' + '</th>'
+                    else:
+                        html_content = html_content + '<th>' + '<a target="_blank" href="https://www.screener.in/company/' \
+                                       + stock_name + '/consolidated/">' + stock_name + '</a>' + '</th>'
 
             #html_content = html_content + '<th>' + 'https://www.screener.in/company/ONGC/consolidated/' + '</th>'
             html_content = html_content + '</tr>'
