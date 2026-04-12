@@ -5,11 +5,11 @@ from data_loaders.news_loader import refresh_stock_news
 
 
 def refresh_all_data():
-    #load_universe_data_from_file()
-    #load_live_quotes_yfinance()
-    #load_hist_quotes_yfinance()
-    #load_index_constituents()
-    #load_index_constituents()
+    load_universe_data_from_file()
+    load_live_quotes_yfinance()
+    load_hist_quotes_yfinance()
+    load_index_constituents()
+    load_index_constituents()
     load_holdings_from_file()
 
 def load_universe_data_from_file():
