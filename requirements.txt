@@ -22,3 +22,5 @@ conda install git
 conda install openai==0.28
 
 conda install yfinance
+
+pip install pypfopt

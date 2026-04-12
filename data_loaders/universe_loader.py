@@ -4,6 +4,9 @@ from databases.update_table_data import save_data, clear_table_data
 from databases.db_utils import prepare_insert_stmt
 
 
+def universe_data_loader_from_file(universe_name, filename, table_name):
+    load_universe_data(universe_name, filename, table_name)
+
 def load_universe_data(universe_name, filename, table_name):
     print('loading data for universe: ', universe_name)
     table_cols = get_table_cols(table_name)

@@ -1,9 +1,3 @@
-Download Postgres(18.3) installer from https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
-Istall with defaults: user: vishnu Pwd: visnu
-port 5432
-
-symbol, stock, qty, buy_price, buy_date, exchange, strategy
-
 -- Table: public.holdings
 
 -- DROP TABLE IF EXISTS public.holdings;
@@ -24,12 +18,43 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.holdings
     OWNER to postgres;
 
+-- Table: public.universe_nifty50
 
-INSERT INTO public.holdings(
-	symbol, stock, qty, buy_date, buy_price, exchange, strategy)
-	VALUES ('SUZLON', 'Suzlon Energy Ltd', 200, '1-3-2026', 41, 'BSE', 'Nift50');
-Select * from public.holdings
+-- DROP TABLE IF EXISTS public.universe_nifty50;
 
+CREATE TABLE IF NOT EXISTS public.universe_nifty50
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.universe_nifty50
+    OWNER to postgres;
+
+
+-- Table: public.universe_nifty100
+
+-- DROP TABLE IF EXISTS public.universe_nifty100;
+
+CREATE TABLE IF NOT EXISTS public.universe_nifty100
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.universe_nifty100
+    OWNER to postgres;
+
+
+-- Table: public.universe_custom
+
+-- DROP TABLE IF EXISTS public.universe_custom;
 
 CREATE TABLE IF NOT EXISTS public.universe_custom
 (
@@ -43,22 +68,37 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.universe_custom
     OWNER to postgres;
 
--- Table: public.nifty100_universe
 
--- DROP TABLE IF EXISTS public.nifty100_universe;
+-- Table: public.nifty50_constituents
 
-CREATE TABLE IF NOT EXISTS public.nifty100_universe
+-- DROP TABLE IF EXISTS public.nifty50_constituents;
+
+CREATE TABLE IF NOT EXISTS public.nifty50_constituents
 (
     symbol text COLLATE pg_catalog."default",
-    stock text COLLATE pg_catalog."default",
-    ticker text COLLATE pg_catalog."default"
+    identifier text COLLATE pg_catalog."default",
+    series text COLLATE pg_catalog."default",
+    open numeric,
+    "dayHigh" numeric,
+    "dayLow" numeric,
+    "lastPrice" numeric,
+    "previousClose" numeric,
+    change numeric,
+    "pChange" numeric,
+    "totalTradedVolume" numeric,
+    "totalTradedValue" numeric,
+    "yearHigh" numeric,
+    "yearLow" numeric,
+    "nearWKH" numeric,
+    "nearWKL" numeric,
+    "perChange365d" numeric,
+    "perChange30d" numeric
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.nifty100_universe
+ALTER TABLE IF EXISTS public.nifty50_constituents
     OWNER to postgres;
-
 
 -- Table: public.nifty100_constituents
 
@@ -91,18 +131,157 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.nifty100_constituents
     OWNER to postgres;
 
+-- Table: public.live_prices_yf_nifty50
+
+-- DROP TABLE IF EXISTS public.live_prices_yf_nifty50;
+
+CREATE TABLE IF NOT EXISTS public.live_prices_yf_nifty50
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default",
+    price_date date,
+    open numeric,
+    high numeric,
+    low numeric,
+    close numeric,
+    volume integer,
+    dividends numeric
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.live_prices_yf_nifty50
+    OWNER to postgres;
+
+-- Table: public.live_prices_yf_nifty100
+
+-- DROP TABLE IF EXISTS public.live_prices_yf_nifty100;
+
+CREATE TABLE IF NOT EXISTS public.live_prices_yf_nifty100
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default",
+    price_date date,
+    open numeric,
+    high numeric,
+    low numeric,
+    close numeric,
+    volume integer,
+    dividends numeric
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.live_prices_yf_nifty100
+    OWNER to postgres;
+
+-- Table: public.live_prices_yf_custom
+
+-- DROP TABLE IF EXISTS public.live_prices_yf_custom;
+
+CREATE TABLE IF NOT EXISTS public.live_prices_yf_custom
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default",
+    price_date date,
+    open numeric,
+    high numeric,
+    low numeric,
+    close numeric,
+    volume integer,
+    dividends numeric
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.live_prices_yf_custom
+    OWNER to postgres;
+
+-- Table: public.hist_prices_yf_nifty50
+
+-- DROP TABLE IF EXISTS public.hist_prices_yf_nifty50;
+
+CREATE TABLE IF NOT EXISTS public.hist_prices_yf_nifty50
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default",
+    price_date date,
+    open numeric,
+    high numeric,
+    low numeric,
+    close numeric,
+    volume integer,
+    dividends numeric
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.hist_prices_yf_nifty50
+    OWNER to postgres;
+
+-- Table: public.hist_prices_yf_nifty100
+
+-- DROP TABLE IF EXISTS public.hist_prices_yf_nifty100;
+
+CREATE TABLE IF NOT EXISTS public.hist_prices_yf_nifty100
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default",
+    price_date date,
+    open numeric,
+    high numeric,
+    low numeric,
+    close numeric,
+    volume integer,
+    dividends numeric
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.hist_prices_yf_nifty100
+    OWNER to postgres;
+
+-- Table: public.hist_prices_yf_custom
+
+-- DROP TABLE IF EXISTS public.hist_prices_yf_custom;
+
+CREATE TABLE IF NOT EXISTS public.hist_prices_yf_custom
+(
+    symbol text COLLATE pg_catalog."default",
+    stock text COLLATE pg_catalog."default",
+    ticker text COLLATE pg_catalog."default",
+    price_date date,
+    open numeric,
+    high numeric,
+    low numeric,
+    close numeric,
+    volume integer,
+    dividends numeric
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.hist_prices_yf_custom
+    OWNER to postgres;
+
 -- Table: public.stock_news
 
 -- DROP TABLE IF EXISTS public.stock_news;
 
 CREATE TABLE IF NOT EXISTS public.stock_news
 (
-    id SERIAL PRIMARY KEY,
+    id integer NOT NULL DEFAULT nextval('stock_news_id_seq'::regclass),
     ticker text COLLATE pg_catalog."default" NOT NULL,
     title text COLLATE pg_catalog."default",
     publisher text COLLATE pg_catalog."default",
     publish_date timestamp without time zone,
-    link text COLLATE pg_catalog."default"
+    link text COLLATE pg_catalog."default",
+    CONSTRAINT stock_news_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;

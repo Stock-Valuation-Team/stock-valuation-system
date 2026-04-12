@@ -3,13 +3,13 @@ from databases.update_table_data import save_data, clear_table_data
 import yfinance as yf
 
 
-def load_live_quotes_from_yfinance(period, table_name):
-    yfinance_live_quotes = get_live_quotes_from_yfinance(period)
+def load_live_quotes_from_yfinance(universe, period, table_name):
+    yfinance_live_quotes = get_live_quotes_from_yfinance(universe, period)
     load_live_quotes_yfinance(yfinance_live_quotes, table_name)
 
 
-def get_live_quotes_from_yfinance(period):
-    universe_data = get_universe_data('combined')
+def get_live_quotes_from_yfinance(universe, period):
+    universe_data = get_universe_data(universe)
     quotes = []
     for univ_data in universe_data:
         symbol = univ_data['symbol']

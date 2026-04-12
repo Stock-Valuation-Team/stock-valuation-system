@@ -5,21 +5,21 @@ from databases.db_utils import prepare_insert_stmt
 from services.universe_service import get_universe_data
 
 
-def refresh_nifty100_constituents_data():
-    table_name = 'nifty100_constituents'
-    index_name = "NIFTY 100"
+def refresh_index_constituents_data(index_name, table_name):
+    #table_name = 'nifty100_constituents'
+    #index_name = "NIFTY 100"
     print('Deleting data from table: ', table_name)
     clear_table_data(table_name)
     print('Loading data in table: ', table_name)
-    count = load_nifty100_data(table_name, index_name)
+    count = load_index_data(table_name, index_name)
     print('Loaded: ', count, ' records in table: ', table_name)
 
 
-def load_nifty100_data(table_name, index_name):
+def load_index_data(table_name, index_name):
     nse = Nse()
     # Get live quotes for all Nifty 100 stocks
     nifty100_quotes = nse.get_stock_quote_in_index(index=index_name)
-    nifty100_cols = get_table_cols('nifty100_constituents')
+    nifty100_cols = get_table_cols(table_name)
     insert_stmt = prepare_insert_stmt(table_name, nifty100_cols)
 
     insert_data = []
