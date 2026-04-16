@@ -33,7 +33,6 @@ urlpatterns = [
     path('', app_view.index, name='index'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
     path("show_holdings_analytics/", holdings_analytics, name = 'holdings_analytics'),
-    #path("stock_company_details/<str:symbol>/", stock_company_details, name='stock_company_details'),
     path("universe_info_nifty100/", universe_info_nifty100, name='universe_info_nifty100'),
     path("universe_info_nifty50/", universe_info_nifty50, name='universe_info_nifty50'),
     path("universe_info_custom/", universe_info_custom, name='universe_info_custom'),
