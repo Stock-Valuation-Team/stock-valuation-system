@@ -97,7 +97,6 @@ def get_holding_data():
     holdings_data = get_holdings()
     return holdings_data
 
-
 def _get_sector_for_symbol(symbol, exchange):
     base_symbol = str(symbol or '').strip().upper()
     if not base_symbol:

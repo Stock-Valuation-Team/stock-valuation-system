@@ -23,7 +23,6 @@ def get_holdings():
     conn.close()
     return result_maps
 
-
 def get_nifty100_data():
     conn = get_db_connection()
     cursor = conn.cursor()

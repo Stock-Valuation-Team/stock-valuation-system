@@ -41,7 +41,3 @@ def load_live_quotes_yfinance(yfinance_live_quotes, table_name):
 
     save_data(insert_query, yfinance_live_quotes)
     print('loaded data in table: ', table_name, ' count: ', len(yfinance_live_quotes))
-
-if __name__ == "__main__":
-    dta = load_live_quotes_from_yfinance('1d', 'live_prices_yfinance')
-    dta = load_live_quotes_from_yfinance('1y', 'hist_prices_yfinance')

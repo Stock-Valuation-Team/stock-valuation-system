@@ -6,8 +6,6 @@ from services.universe_service import get_universe_data
 
 
 def refresh_index_constituents_data(index_name, table_name):
-    #table_name = 'nifty100_constituents'
-    #index_name = "NIFTY 100"
     print('Deleting data from table: ', table_name)
     clear_table_data(table_name)
     print('Loading data in table: ', table_name)
@@ -44,9 +42,3 @@ def get_live_quotes():
        print(stock)
        quote = nse.get_quote(stock)
        quotes.append(quote)
-    print()
-
-if __name__ == "__main__":
-    refresh_nifty100_constituents_data()
-
-
