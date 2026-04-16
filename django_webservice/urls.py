@@ -21,7 +21,7 @@ from django.urls import path
 from application.modules import simple_view
 from application.modules import app_view
 from application.modules import post_request_view
-from controller.holdings_controller import holdings_info, holdings_analytics, stock_company_details
+from controller.holdings_controller import holdings_info, holdings_analytics
 from controller.universe_controller import universe_analytics, universe_info_nifty100, \
     universe_info_nifty50, universe_info_custom, universe_info_combined
 from controller.Index_controller import nifty100_info
@@ -33,7 +33,7 @@ urlpatterns = [
     path('', app_view.index, name='index'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
     path("show_holdings_analytics/", holdings_analytics, name = 'holdings_analytics'),
-    path("stock_company_details/<str:symbol>/", stock_company_details, name='stock_company_details'),
+    #path("stock_company_details/<str:symbol>/", stock_company_details, name='stock_company_details'),
     path("universe_info_nifty100/", universe_info_nifty100, name='universe_info_nifty100'),
     path("universe_info_nifty50/", universe_info_nifty50, name='universe_info_nifty50'),
     path("universe_info_custom/", universe_info_custom, name='universe_info_custom'),
@@ -41,6 +41,7 @@ urlpatterns = [
 
     path("", universe_analytics, name = 'universe_analytics'),
     path("nifty100_data/", nifty100_info, name = 'nifty100_info'),
+    path("nifty50_data/", nifty100_info, name = 'nifty50_info'),
     path("optimizer/", optimizer_view, name = 'optimizer'),
 
 ]

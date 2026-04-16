@@ -5,8 +5,6 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  background: #f7fafc;
 }
 
 h2, p {
@@ -68,97 +66,6 @@ table {
     margin-right: auto;
 }
 
-.container {
-  max-width: 1120px;
-  margin: 20px auto;
-  padding: 0 12px;
-}
-
-.upload-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f9fcff 100%);
-  border: 1px solid #d7e5f4;
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-}
-
-.upload-card h3 {
-  margin: 0 0 8px 0;
-  color: #1f2d3a;
-  font-size: 22px;
-}
-
-.upload-help {
-  font-size: 14px;
-  color: #475569;
-  margin-bottom: 14px;
-}
-
-.upload-form {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.upload-form input[type="file"] {
-  padding: 10px;
-  border: 1px dashed #9db7d3;
-  border-radius: 10px;
-  background: #f8fbff;
-  min-width: 320px;
-  color: #334155;
-}
-
-.upload-form button {
-  border: none;
-  background: #0f62fe;
-  color: #fff;
-  padding: 11px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  box-shadow: 0 6px 14px rgba(15, 98, 254, 0.25);
-}
-
-.upload-form button:hover {
-  background: #0b4fd0;
-}
-
-.alert-error {
-  margin-top: 12px;
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.sample-cols {
-  margin-top: 10px;
-  font-size: 12px;
-  color: #5b6b7b;
-  background: #f2f7ff;
-  border: 1px solid #dbeafe;
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: inline-block;
-}
-
-.upload-badge {
-  display: inline-block;
-  background: #e7f1ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
 td {
   padding-top: 20px;    /* Adds space above content */
   padding-bottom: 20px; /* Adds space below content */
@@ -188,8 +95,8 @@ td {
     <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Index</a>
         <div class="dropdown-content">
+            <a href="nifty50_data/">Nifty50 Analytics</a>
             <a href="nifty100_data/">Nifty100 Analytics</a>
-            <a href="">Nifty500 Analytics</a>
         </div>
     </li>
 
@@ -206,44 +113,23 @@ td {
             <a href="">Holding</a>
             <a href="">FII Investments</a>
         </div>
-    <!--<li class="dropdown">
-        <a href="javascript:void(0)" class="dropbtn">Data Load</a>
-        <div class="dropdown-content">
-            <a href="">Universe</a>
-            <a href="">Holding</a>
-            <a href="">FII Investments</a>
-            <a href="">Correlation</a>
-            <a href="">Risk Cov</a>
-        </div>
-    </li>-->
-    <!--<li><a href="">Overlayering</a></li>-->
+        <!--<li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Data Load</a>
+            <div class="dropdown-content">
+                <a href="">Universe</a>
+                <a href="">Holding</a>
+                <a href="">FII Investments</a>
+                <a href="">Correlation</a>
+                <a href="">Risk Cov</a>
+            </div>
+        </li>-->
+        <!--<li><a href="">Overlayering</a></li>-->
     <li><a href="optimizer/">Optimizer</a></li>
     <!--<li><a href="admin/">Admin</a></li>
     <li><a href="">Help</a></li>-->
 </ul>
 
 <div>
-
-  <div class="container">
-    <div class="upload-card">
-      <h3>Upload Portfolio To Holdings</h3>
-      <div class="upload-badge">CSV Import</div>
-      <div class="upload-help">
-        Upload your portfolio CSV and the holdings table will be refreshed automatically. After upload, you will be redirected to Holding Details.
-      </div>
-      <form class="upload-form" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="portfolio_file" accept=".csv" required>
-        <button type="submit">Upload Portfolio</button>
-      </form>
-      <div class="sample-cols">
-        CSV columns: symbol, stock, qty, buy_date, buy_price, exchange, strategy
-      </div>
-      {% if upload_error %}
-      <div class="alert-error">{{ upload_error }}</div>
-      {% endif %}
-    </div>
-  </div>
 
     <table>
         <tr>
@@ -282,7 +168,7 @@ td {
             <td><img src="static/why.jpg" alt="logo" width="500" height="300"></td>
         </tr>
 
-        </table>
+    </table>
 </div>
 
 </body>
