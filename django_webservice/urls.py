@@ -21,7 +21,7 @@ from django.urls import path
 from application.modules import simple_view
 from application.modules import app_view
 from application.modules import post_request_view
-from controller.holdings_controller import holdings_info, holdings_analytics
+from controller.holdings_controller import holdings_info, holdings_analytics, holdings_recommendations
 from controller.universe_controller import universe_analytics, universe_info_nifty100, \
     universe_info_nifty50, universe_info_custom, universe_info_combined
 from controller.Index_controller import nifty100_info
@@ -31,7 +31,9 @@ from controller.optimizer_controller import optimizer_view
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', app_view.index, name='index'),
+    path("upload_portfolio/", app_view.upload_portfolio, name='upload_portfolio'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
+    path("show_holdings_recommendations/", holdings_recommendations, name='holdings_recommendations'),
     path("show_holdings_analytics/", holdings_analytics, name = 'holdings_analytics'),
     path("universe_info_nifty100/", universe_info_nifty100, name='universe_info_nifty100'),
     path("universe_info_nifty50/", universe_info_nifty50, name='universe_info_nifty50'),

@@ -129,3 +129,30 @@ def index(request):
                 context['upload_error'] = str(ex)
 
     return render(request, "index.html", context)
+
+
+def upload_portfolio(request):
+    context = {
+        'upload_error': None,
+        'upload_message': None,
+    }
+
+    if request.method == 'POST':
+        upload_file = request.FILES.get('portfolio_file')
+        if upload_file is None:
+            context['upload_error'] = 'Please choose a portfolio CSV file.'
+        else:
+            try:
+                holdings_rows = _parse_portfolio_csv(upload_file)
+                clear_table_data('holdings')
+                insert_stmt = (
+                    'INSERT INTO holdings '
+                    '(symbol, stock, qty, buy_date, buy_price, exchange, strategy) '
+                    'VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                )
+                save_data(insert_stmt, holdings_rows)
+                return redirect('/show_holdings/')
+            except Exception as ex:
+                context['upload_error'] = str(ex)
+
+    return render(request, "upload_portfolio.html", context)
