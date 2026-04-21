@@ -155,9 +155,9 @@ def get_holding_analytics_data():
         invested_value = round(qty * buy_price, 2)
         live_price = live_prices.get(symbol)
 
-        current_value = None
-        pnl = None
-        pnl_pct = None
+        current_value = invested_value
+        pnl = 0.0
+        pnl_pct = 0.0
         if live_price is not None:
             current_value = round(qty * live_price, 2)
             pnl = round(current_value - invested_value, 2)
@@ -188,7 +188,7 @@ def get_holding_analytics_data():
         'invested_value': round(total_invested, 2),
         'current_value': round(total_current, 2),
         'pnl': round(total_current - total_invested, 2),
-        'pnl_pct': round(((total_current - total_invested) / total_invested) * 100, 2) if total_invested else None,
+        'pnl_pct': round(((total_current - total_invested) / total_invested) * 100, 2) if total_invested else 0.0,
     }
     analytics_rows.append(total_row)
 
@@ -219,7 +219,6 @@ def get_portfolio_summary_data():
         if live_price is not None:
             total_current += qty * live_price
         else:
-            # If live price is unavailable, keep current value aligned to invested value.
             total_current += invested_value
 
     pnl = total_current - total_invested

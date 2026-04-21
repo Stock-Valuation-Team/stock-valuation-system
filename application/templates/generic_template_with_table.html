@@ -67,6 +67,7 @@ table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 90%;
+  margin: 0 auto;
 
 }
 
@@ -81,6 +82,45 @@ th, td {
 }
 tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+.recommendation-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.recommendation-buy {
+  color: #166534;
+  background-color: #ecfdf3;
+  border-color: #86efac;
+}
+
+.recommendation-hold {
+  color: #9a3412;
+  background-color: #fff7ed;
+  border-color: #fdba74;
+}
+
+.recommendation-sell {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.pnl-profit {
+  color: #166534;
+}
+
+.pnl-loss {
+  color: #991b1b;
+}
+
+.pnl-neutral {
+  color: #374151;
 }
 
 .holdings-row-odd td,
@@ -240,7 +280,7 @@ function toggleDetail(rowId, btn) {
   <p style="margin: 6px 0 0 0; font-weight: bold; color: #111827;">
     <span style="display: inline-block; margin-right: 18px; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Total Investment: &#8377;{{ portfolio_summary.invested_value }}</span>
     <span style="display: inline-block; margin-right: 18px; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Current Value: &#8377;{{ portfolio_summary.total_value }}</span>
-    <span style="display: inline-block; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Profit/Loss: &#8377;{{ portfolio_summary.pnl }} ({{ portfolio_summary.pnl_pct }})</span>
+    <span style="display: inline-block; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Profit/Loss: <span class="{% if portfolio_summary.status == 'profit' %}pnl-profit{% elif portfolio_summary.status == 'loss' %}pnl-loss{% else %}pnl-neutral{% endif %}">&#8377;{{ portfolio_summary.pnl }} ({{ portfolio_summary.pnl_pct }})</span></span>
   </p>
 </div>
 {% endif %}
@@ -256,56 +296,107 @@ function toggleDetail(rowId, btn) {
 
 {% if holdings_details_rows %}
 <div style="display: grid; justify-items: center;">
-  <table>
-    <tr>
-      <th><b>symbol</b></th>
-      <th><b>stock</b></th>
-      <th><b>qty</b></th>
-      <th><b>buy_date</b></th>
-      <th><b>buy_price</b></th>
-      <th><b>exchange</b></th>
-      <th><b>strategy</b></th>
-    </tr>
-    {% for row in holdings_details_rows %}
-    <tr class="{% cycle 'holdings-row-odd' 'holdings-row-even' %}">
-      <td>
-        <button class="toggle-btn" type="button" onclick="toggleDetail('{{ row.row_id }}', this)">+</button>
-        &nbsp;
-        <a target="_blank" href="https://www.screener.in/company/{{ row.symbol }}/consolidated/">{{ row.symbol }}</a>
-      </td>
-      <td>{{ row.stock }}</td>
-      <td>{{ row.qty }}</td>
-      <td>{{ row.buy_date }}</td>
-      <td>{{ row.buy_price }}</td>
-      <td>{{ row.exchange }}</td>
-      <td>{{ row.strategy }}</td>
-    </tr>
-    <tr id="{{ row.row_id }}" style="display: none;">
-      <td colspan="7">
-        <div class="detail-box">
-          <div class="detail-layout">
-            <div class="detail-left">
-              <p><strong>Stock Name:</strong> {{ row.stock }}</p>
-              <p><strong>Current Price:</strong> &#8377;{{ row.current_price }}</p>
-              <p><strong>Total Profit/Loss:</strong> &#8377;{{ row.total_pnl }}</p>
-              <p><strong>P/L Percentage:</strong> {{ row.pnl_pct }}</p>
-            </div>
-            <div class="rec-panel">
-              <p><strong>Recommendation</strong></p>
-              {% if row.recommendation == 'BUY' %}
-              <span class="rec-badge rec-buy">BUY</span>
-              {% elif row.recommendation == 'SELL' %}
-              <span class="rec-badge rec-sell">SELL</span>
-              {% else %}
-              <span class="rec-badge rec-hold">HOLD</span>
-              {% endif %}
+  <div style="width: 100%; overflow-x: auto;">
+    <table>
+      <tr>
+        <th><b>symbol</b></th>
+        <th><b>stock</b></th>
+        <th><b>qty</b></th>
+        <th><b>buy_date</b></th>
+        <th><b>buy_price</b></th>
+        <th><b>live_price</b></th>
+        <th><b>invested_value</b></th>
+        <th><b>current_value</b></th>
+        <th><b>pnl</b></th>
+        <th><b>pnl %</b></th>
+        <th><b>recommendation</b></th>
+      </tr>
+      {% for row in holdings_details_rows %}
+      <tr class="{% cycle 'holdings-row-odd' 'holdings-row-even' %}">
+        <td>
+          <button class="toggle-btn" type="button" onclick="toggleDetail('{{ row.row_id }}', this)">+</button>
+          &nbsp;
+          <a target="_blank" href="https://www.screener.in/company/{{ row.symbol }}/consolidated/">{{ row.symbol }}</a>
+        </td>
+        <td>{{ row.stock }}</td>
+        <td>{{ row.qty }}</td>
+        <td>{{ row.buy_date }}</td>
+        <td>&#8377;{{ row.buy_price|floatformat:2 }}</td>
+        <td>{% if row.live_price %}&#8377;{{ row.live_price|floatformat:2 }}{% else %}-{% endif %}</td>
+        <td>&#8377;{{ row.invested_value|floatformat:2 }}</td>
+        <td>&#8377;{{ row.current_value|floatformat:2 }}</td>
+        <td>
+          <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">
+            &#8377;{{ row.pnl|floatformat:2 }}
+          </span>
+        </td>
+        <td>
+          <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">
+            {{ row.pnl_pct|floatformat:2 }}%
+          </span>
+        </td>
+        <td>
+          {% if row.recommendation == 'BUY' %}
+          <span class="recommendation-badge recommendation-buy">BUY</span>
+          {% elif row.recommendation == 'SELL' %}
+          <span class="recommendation-badge recommendation-sell">SELL</span>
+          {% else %}
+          <span class="recommendation-badge recommendation-hold">HOLD</span>
+          {% endif %}
+        </td>
+      </tr>
+      <tr id="{{ row.row_id }}" style="display: none;">
+        <td colspan="11">
+          <div class="detail-box">
+            <div class="detail-layout">
+              <div class="detail-left">
+                <p><strong>Stock Name:</strong> {{ row.stock }}</p>
+                <p><strong>Live Price:</strong> {% if row.live_price %}&#8377;{{ row.live_price|floatformat:2 }}{% else %}-{% endif %}</p>
+                <p><strong>Invested Value:</strong> &#8377;{{ row.invested_value|floatformat:2 }}</p>
+                <p><strong>Current Value:</strong> &#8377;{{ row.current_value|floatformat:2 }}</p>
+                <p><strong>PnL:</strong> <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">&#8377;{{ row.pnl|floatformat:2 }}</span></p>
+                <p><strong>PnL Percentage:</strong> <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">{{ row.pnl_pct|floatformat:2 }}%</span></p>
+                {% if row.recommendation_table.headers %}
+                <div style="margin-top: 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: #ffffff; padding: 8px; text-align: left;">
+                  <p style="margin: 0 0 6px 0;"><strong>Target Price Distribution</strong></p>
+                  <div style="overflow-x: auto;">
+                    <table style="width: 100%; margin: 0; font-size: 11px;">
+                      <tr>
+                        {% for header in row.recommendation_table.headers %}
+                        <th style="background: #f3f4f6;">{{ header }}</th>
+                        {% endfor %}
+                      </tr>
+                      {% for data_row in row.recommendation_table.rows %}
+                      <tr>
+                        {% for cell in data_row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                      </tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+              <div class="rec-panel">
+                <div style="text-align: right;">
+                  <p><strong>Recommendation</strong></p>
+                  {% if row.recommendation == 'BUY' %}
+                  <span class="rec-badge rec-buy">BUY</span>
+                  {% elif row.recommendation == 'SELL' %}
+                  <span class="rec-badge rec-sell">SELL</span>
+                  {% else %}
+                  <span class="rec-badge rec-hold">HOLD</span>
+                  {% endif %}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 </div>
 {% else %}
 <div style="display: grid; justify-items: center;">{{ html_table |safe }}</div>
