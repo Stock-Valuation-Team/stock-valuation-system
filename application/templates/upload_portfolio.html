@@ -144,7 +144,8 @@ form {
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 18px;
 }
 
@@ -160,6 +161,19 @@ form {
 
 .btn:hover {
   background-color: red;
+}
+
+.btn-secondary {
+  background-color: #eef2ff;
+  color: #1e3a8a;
+  border: 1px solid #c7d2fe;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  background-color: #e0e7ff;
+  color: #1e3a8a;
 }
 
 .link-row {
@@ -216,6 +230,7 @@ form {
       {% csrf_token %}
       <input class="file-field" type="file" name="portfolio_file" accept=".csv,text/csv" required>
       <div class="actions">
+        <a class="btn btn-secondary" href="../upload_portfolio/sample_csv/">Download Sample CSV</a>
         <button class="btn" type="submit">Upload Portfolio</button>
       </div>
     </form>

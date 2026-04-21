@@ -32,6 +32,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', app_view.index, name='index'),
     path("upload_portfolio/", app_view.upload_portfolio, name='upload_portfolio'),
+    path("upload_portfolio/sample_csv/", app_view.download_sample_portfolio, name='download_sample_portfolio'),
     path("show_holdings/", holdings_info, name = 'holdings_info'),
     path("show_holdings_recommendations/", holdings_recommendations, name='holdings_recommendations'),
     path("show_holdings_analytics/", holdings_analytics, name = 'holdings_analytics'),

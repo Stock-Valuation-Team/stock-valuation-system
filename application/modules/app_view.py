@@ -3,6 +3,7 @@ import csv
 import io
 from datetime import datetime, date
 
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from databases.update_table_data import save_data, clear_table_data
@@ -156,3 +157,16 @@ def upload_portfolio(request):
                 context['upload_error'] = str(ex)
 
     return render(request, "upload_portfolio.html", context)
+
+
+def download_sample_portfolio(request):
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(['symbol', 'stock', 'qty', 'buy_date', 'buy_price', 'exchange', 'strategy'])
+    writer.writerow(['TMCV', 'Tata Motors Ltd', 100, '2026-01-03', 400, 'NSE', 'Nifty50'])
+    writer.writerow(['HDFCBANK', 'HDFC Bank Ltd', 100, '2026-01-03', 804, 'NSE', 'Nifty50'])
+    writer.writerow(['INFY', 'Infosys Ltd', 100, '2026-01-03', 1288.9, 'NSE', 'Nifty50'])
+
+    response = HttpResponse(buffer.getvalue(), content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="sample_portfolio.csv"'
+    return response
