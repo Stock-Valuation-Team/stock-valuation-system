@@ -1,0 +1,48 @@
+Professional Institutional Recommendations
+
+| Brokerage / Analyst Firm | Recommendation | Target Price (₹) | Implied Upside/Downside |
+| ------------------------ | -------------- | ---------------- | ----------------------- |
+| Consensus (43 Analysts)  | OUTPERFORM     | 2,961.95         | +14.94% marketscreener  |
+| Nomura                   | Buy            | 2,840            | +10.06%                 |
+| Motilal Oswal            | Buy            | 3,000            | +16.21% moneycontrol    |
+| Jefferies                | Hold           | 3,100            | +20.06%                 |
+| Morgan Stanley           | Buy            | 3,480            | +34.85%                 |
+| HSBC                     | Hold           | 2,800            | +8.52% marketscreener   |
+| CLSA                     | Outperform     | 3,900            | +51.13%                 |
+| Kotak                    | Neutral        | 2,900            | +12.41% investing       |
+Target Price Distribution
+
+| Category                  | Number of Analysts | Average Target (₹) | Implied Upside/Downside         |
+| ------------------------- | ------------------ | ------------------ | ------------------------------- |
+| Buy/Outperform/Strong Buy | 26                 | 3,383              | +31.09% investing+1             |
+| Hold/Neutral              | 14                 | 2,800              | +8.52% economictimes.indiatimes |
+| Sell/Underperform/Reduce  | 3                  | 1,775              | -31.12%                         |
+| Consensus                 | 43                 | 2,961.95           | +14.94%                         |
+Key Takeaways
+
+Current Price (Latest Close): ₹2,576.90
+
+Market Capitalization: ₹9.34 lakh crore = ₹93,40,000 lakh
+
+Consensus Professional Recommendation: OUTPERFORM
+
+Consensus reflects AI deals ramp-up and US recovery offsetting FY26 revenue dip concerns.
+
+Nomura upgrade to Buy; targets range wide amid macro uncertainty .
+
+Actionable Insights for Investors
+
+Accumulate on dips below ₹2,500 targeting ₹3,000+ on AI order inflows and Q4 beats.
+
+Trim exposure if breaks ₹2,400 support on persistent US weakness.
+
+Monitor deal TCV and attrition trends for growth re-acceleration.
+
+Risk: High valuation at 17x P/E vulnerable to spending cuts.
+
+Key Takeaways
+TCS at ₹2,576.90 with OUTPERFORM consensus and 15% upside to ₹2,962.
+
+Market cap ₹9.34 lakh crore amid IT sector pressures.
+
+Bull to ₹3,900 on AI; bear to ₹1,775 on demand slowdown.

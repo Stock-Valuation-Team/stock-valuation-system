@@ -1,0 +1,48 @@
+Professional Institutional Recommendations
+
+| Brokerage / Analyst Firm | Recommendation | Target Price (₹) | Implied Upside/Downside  |
+| ------------------------ | -------------- | ---------------- | ------------------------ |
+| Consensus (44 Analysts)  | OUTPERFORM     | 1,645.95         | +31.52% marketscreener+1 |
+| Phillip Securities       | Buy            | 1,820            | +45.42% marketscreener   |
+| Nomura                   | Neutral        | 1,600            | +27.78% marketscreener   |
+| Wedbush                  | Outperform     | 2,076            | +65.86% benzinga         |
+| HSBC                     | Hold           | 1,485            | +18.68% investing        |
+| Kotak                    | Buy            | 1,900            | +51.78% investing        |
+| Jefferies                | Hold           | 1,550            | +23.78% marketscreener   |
+| Motilal Oswal            | Buy            | 1,700            | +35.81% marketscreener   | 
+Target Price Distribution
+
+| Category                  | Number of Analysts | Average Target (₹) | Implied Upside/Downside |
+| ------------------------- | ------------------ | ------------------ | ----------------------- |
+| Buy/Outperform/Strong Buy | 30                 | 1,744              | +39.36% investing+1     |
+| Hold/Neutral              | 12                 | 1,600              | +27.78% marketscreener  |
+| Sell/Underperform/Reduce  | 2                  | 1,350              | -10.45% marketscreener  |
+| Consensus                 | 44                 | 1,645.95           | +31.52% marketscreener  |
+Key Takeaways
+
+Current Price (Latest Close): ₹1,251.00
+
+Market Capitalization: ₹5.07 lakh crore = ₹50,71,920 lakh
+
+Consensus Professional Recommendation: OUTPERFORM
+
+Positive outlook on AI transformation deals and margin recovery despite US client spending caution.
+
+Recent Phillip Securities upgrade to Buy; wide target dispersion reflects macro risks.
+
+Actionable Insights for Investors
+
+Accumulate on dips below ₹1,200 targeting ₹1,650+ on Q4 guidance upgrade.
+
+Trim exposure if breaks ₹1,150 support amid prolonged IT slowdown.
+
+Monitor deal ramp-up and US BFSI recovery for re-rating triggers.
+
+Risk: Elevated attrition and wage hikes pressure margins if growth disappoints.
+
+Key Takeaways
+Infosys at ₹1,251 with OUTPERFORM consensus and 32% upside to ₹1,646.
+
+Market cap ₹5.07 lakh crore trails peers amid sector headwinds.
+
+Bull to ₹2,076 on AI wins; bear to ₹1,350 on demand weakness.

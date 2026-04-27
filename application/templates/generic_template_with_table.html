@@ -67,6 +67,7 @@ table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 90%;
+  margin: 0 auto;
 
 }
 
@@ -82,7 +83,136 @@ th, td {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+.recommendation-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.recommendation-buy {
+  color: #166534;
+  background-color: #ecfdf3;
+  border-color: #86efac;
+}
+
+.recommendation-hold {
+  color: #9a3412;
+  background-color: #fff7ed;
+  border-color: #fdba74;
+}
+
+.recommendation-sell {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.pnl-profit {
+  color: #166534;
+}
+
+.pnl-loss {
+  color: #991b1b;
+}
+
+.pnl-neutral {
+  color: #374151;
+}
+
+.holdings-row-odd td,
+.holdings-row-odd th {
+  background-color: #ffffff;
+}
+
+.holdings-row-even td,
+.holdings-row-even th {
+  background-color: #dddddd;
+}
+
+.toggle-btn {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #999;
+  background: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.detail-box {
+  border: 1px solid #cccccc;
+  background-color: #fcfcfc;
+  padding: 8px;
+}
+
+.detail-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.detail-left {
+  flex: 1;
+}
+
+.rec-panel {
+  min-width: 170px;
+  text-align: right;
+}
+
+.rec-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-weight: bold;
+}
+
+.rec-buy {
+  color: #166534;
+  background-color: #ecfdf3;
+  border-color: #86efac;
+}
+
+.rec-hold {
+  color: #9a3412;
+  background-color: #fff7ed;
+  border-color: #fdba74;
+}
+
+.rec-sell {
+  color: #991b1b;
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+@media (max-width: 760px) {
+  .detail-layout {
+    display: block;
+  }
+  .rec-panel {
+    margin-top: 8px;
+    text-align: left;
+  }
+}
 </style>
+<script>
+function toggleDetail(rowId, btn) {
+  var row = document.getElementById(rowId);
+  if (!row) return;
+  if (row.style.display === 'none' || row.style.display === '') {
+    row.style.display = 'table-row';
+    if (btn) btn.textContent = '-';
+  } else {
+    row.style.display = 'none';
+    if (btn) btn.textContent = '+';
+  }
+}
+</script>
 </head>
 <body>
 <ul>
@@ -90,6 +220,7 @@ tr:nth-child(even) {
     <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Holdings</a>
         <div class="dropdown-content">
+        <a href="../upload_portfolio/">Upload Portfolio</a>
             <a href="../show_holdings/">Holding Details</a>
             <a href="../show_holdings_analytics/">Holding Analytics</a>
         </div>
@@ -143,7 +274,133 @@ tr:nth-child(even) {
 </ul>
 <br>
 
+{% if portfolio_summary %}
+<div style="width: 90%; margin: 0 auto 12px auto; border: 2px solid #38444d; padding: 10px 12px; background: linear-gradient(180deg, #f7fbff 0%, #eef4ff 100%); box-shadow: 0 2px 8px rgba(56, 68, 77, 0.12); border-radius: 6px;">
+  <strong style="display: inline-block; margin-bottom: 4px; color: #1f2937;">Portfolio Summary</strong>
+  <p style="margin: 6px 0 0 0; font-weight: bold; color: #111827;">
+    <span style="display: inline-block; margin-right: 18px; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Total Investment: &#8377;{{ portfolio_summary.invested_value }}</span>
+    <span style="display: inline-block; margin-right: 18px; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Current Value: &#8377;{{ portfolio_summary.total_value }}</span>
+    <span style="display: inline-block; padding: 2px 6px; background-color: #ffffff; border: 1px solid #dbeafe; border-radius: 4px;">Profit/Loss: <span class="{% if portfolio_summary.status == 'profit' %}pnl-profit{% elif portfolio_summary.status == 'loss' %}pnl-loss{% else %}pnl-neutral{% endif %}">&#8377;{{ portfolio_summary.pnl }} ({{ portfolio_summary.pnl_pct }})</span></span>
+  </p>
+</div>
+{% endif %}
+
+{% if recommendations %}
+<div style="width: 90%; margin: 0 auto 10px auto; border: 1px solid #dddddd; padding: 8px; background-color: #f9f9f9;">
+  <strong>Recommendation Summary (from mockdata)</strong>
+  <p style="margin: 6px 0 0 0;"><strong>BUY:</strong> {{ recommendations.BUY|join:", "|default:"-" }}</p>
+  <p style="margin: 6px 0 0 0;"><strong>HOLD:</strong> {{ recommendations.HOLD|join:", "|default:"-" }}</p>
+  <p style="margin: 6px 0 0 0;"><strong>SELL:</strong> {{ recommendations.SELL|join:", "|default:"-" }}</p>
+</div>
+{% endif %}
+
+{% if holdings_details_rows %}
+<div style="display: grid; justify-items: center;">
+  <div style="width: 100%; overflow-x: auto;">
+    <table>
+      <tr>
+        <th><b>symbol</b></th>
+        <th><b>stock</b></th>
+        <th><b>qty</b></th>
+        <th><b>buy_date</b></th>
+        <th><b>buy_price</b></th>
+        <th><b>live_price</b></th>
+        <th><b>invested_value</b></th>
+        <th><b>current_value</b></th>
+        <th><b>pnl</b></th>
+        <th><b>pnl %</b></th>
+        <th><b>recommendation</b></th>
+      </tr>
+      {% for row in holdings_details_rows %}
+      <tr class="{% cycle 'holdings-row-odd' 'holdings-row-even' %}">
+        <td>
+          <button class="toggle-btn" type="button" onclick="toggleDetail('{{ row.row_id }}', this)">+</button>
+          &nbsp;
+          <a target="_blank" href="https://www.screener.in/company/{{ row.symbol }}/consolidated/">{{ row.symbol }}</a>
+        </td>
+        <td>{{ row.stock }}</td>
+        <td>{{ row.qty }}</td>
+        <td>{{ row.buy_date }}</td>
+        <td>&#8377;{{ row.buy_price|floatformat:2 }}</td>
+        <td>{% if row.live_price %}&#8377;{{ row.live_price|floatformat:2 }}{% else %}-{% endif %}</td>
+        <td>&#8377;{{ row.invested_value|floatformat:2 }}</td>
+        <td>&#8377;{{ row.current_value|floatformat:2 }}</td>
+        <td>
+          <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">
+            &#8377;{{ row.pnl|floatformat:2 }}
+          </span>
+        </td>
+        <td>
+          <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">
+            {{ row.pnl_pct|floatformat:2 }}%
+          </span>
+        </td>
+        <td>
+          {% if row.recommendation == 'BUY' %}
+          <span class="recommendation-badge recommendation-buy">BUY</span>
+          {% elif row.recommendation == 'SELL' %}
+          <span class="recommendation-badge recommendation-sell">SELL</span>
+          {% else %}
+          <span class="recommendation-badge recommendation-hold">HOLD</span>
+          {% endif %}
+        </td>
+      </tr>
+      <tr id="{{ row.row_id }}" style="display: none;">
+        <td colspan="11">
+          <div class="detail-box">
+            <div class="detail-layout">
+              <div class="detail-left">
+                <p><strong>Stock Name:</strong> {{ row.stock }}</p>
+                <p><strong>Live Price:</strong> {% if row.live_price %}&#8377;{{ row.live_price|floatformat:2 }}{% else %}-{% endif %}</p>
+                <p><strong>Invested Value:</strong> &#8377;{{ row.invested_value|floatformat:2 }}</p>
+                <p><strong>Current Value:</strong> &#8377;{{ row.current_value|floatformat:2 }}</p>
+                <p><strong>PnL:</strong> <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">&#8377;{{ row.pnl|floatformat:2 }}</span></p>
+                <p><strong>PnL Percentage:</strong> <span class="{% if row.pnl > 0 %}pnl-profit{% elif row.pnl < 0 %}pnl-loss{% else %}pnl-neutral{% endif %}">{{ row.pnl_pct|floatformat:2 }}%</span></p>
+                {% if row.recommendation_table.headers %}
+                <div style="margin-top: 12px; border: 1px solid #d1d5db; border-radius: 6px; background-color: #ffffff; padding: 8px; text-align: left;">
+                  <p style="margin: 0 0 6px 0;"><strong>Target Price Distribution</strong></p>
+                  <div style="overflow-x: auto;">
+                    <table style="width: 100%; margin: 0; font-size: 11px;">
+                      <tr>
+                        {% for header in row.recommendation_table.headers %}
+                        <th style="background: #f3f4f6;">{{ header }}</th>
+                        {% endfor %}
+                      </tr>
+                      {% for data_row in row.recommendation_table.rows %}
+                      <tr>
+                        {% for cell in data_row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                      </tr>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+              <div class="rec-panel">
+                <div style="text-align: right;">
+                  <p><strong>Recommendation</strong></p>
+                  {% if row.recommendation == 'BUY' %}
+                  <span class="rec-badge rec-buy">BUY</span>
+                  {% elif row.recommendation == 'SELL' %}
+                  <span class="rec-badge rec-sell">SELL</span>
+                  {% else %}
+                  <span class="rec-badge rec-hold">HOLD</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% else %}
 <div style="display: grid; justify-items: center;">{{ html_table |safe }}</div>
+{% endif %}
 
 </body>
 </html>

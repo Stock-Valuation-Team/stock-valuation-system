@@ -155,9 +155,9 @@ def get_holding_analytics_data():
         invested_value = round(qty * buy_price, 2)
         live_price = live_prices.get(symbol)
 
-        current_value = None
-        pnl = None
-        pnl_pct = None
+        current_value = invested_value
+        pnl = 0.0
+        pnl_pct = 0.0
         if live_price is not None:
             current_value = round(qty * live_price, 2)
             pnl = round(current_value - invested_value, 2)
@@ -188,11 +188,58 @@ def get_holding_analytics_data():
         'invested_value': round(total_invested, 2),
         'current_value': round(total_current, 2),
         'pnl': round(total_current - total_invested, 2),
-        'pnl_pct': round(((total_current - total_invested) / total_invested) * 100, 2) if total_invested else None,
+        'pnl_pct': round(((total_current - total_invested) / total_invested) * 100, 2) if total_invested else 0.0,
     }
     analytics_rows.append(total_row)
 
     return analytics_rows
+
+
+def get_portfolio_summary_data():
+    holdings_data = get_holdings()
+    live_prices = _fetch_live_prices(holdings_data)
+
+    total_invested = 0.0
+    total_current = 0.0
+    company_symbols = set()
+    total_holdings = 0
+
+    for holding in holdings_data:
+        symbol = str(holding.get('symbol') or '').strip().upper()
+        if symbol:
+            company_symbols.add(symbol)
+
+        qty = _to_float(holding.get('qty'))
+        buy_price = _to_float(holding.get('buy_price'))
+        invested_value = qty * buy_price
+        total_invested += invested_value
+        total_holdings += int(qty)
+
+        live_price = live_prices.get(symbol)
+        if live_price is not None:
+            total_current += qty * live_price
+        else:
+            total_current += invested_value
+
+    pnl = total_current - total_invested
+    pnl_pct = ((pnl / total_invested) * 100) if total_invested else 0.0
+
+    if pnl > 0:
+        status = 'profit'
+    elif pnl < 0:
+        status = 'loss'
+    else:
+        status = 'neutral'
+
+    return {
+        'invested_value': round(total_invested, 2),
+        'total_value': round(total_current, 2),
+        'pnl': round(pnl, 2),
+        'pnl_pct': f"{round(pnl_pct, 2)}%",
+        'status': status,
+        'total_holdings': total_holdings,
+        'companies': len(company_symbols),
+    }
 
 
 def _get_ticker_for_symbol(symbol):

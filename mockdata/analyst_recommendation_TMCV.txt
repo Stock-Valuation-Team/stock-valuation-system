@@ -1,0 +1,29 @@
+## Professional Institutional Recommendations
+
+Consensus Professional Recommendation: **Outperform**. [gurufocus](https://www.gurufocus.com/stock/BOM:500570/forecast)
+Average brokerage recommendation score of 2.2 on a 1-5 scale (1=Strong Buy, 5=Sell) from 51 firms. [gurufocus](https://www.gurufocus.com/stock/NSE:TATAMOTORS/forecast)
+Recent broker views include UBS Buy at ₹550 (24% upside from prior levels), Emkay Buy at ₹750, ICICI Buy at ₹831. [multibagg](https://www.multibagg.ai/market-pulse/articles/tata-motors-cv-ubs-buy-rating-cmkxk77fy4rnkrt0j1yikd5yz)
+
+## Target Price Distribution
+
+| Brokerage/Firm | Target Price | Implied Upside/Downside |
+|----------------|--------------|-------------------------|
+| Consensus (28-51 analysts) | ₹765 | +71.5%  [indmoney](https://www.indmoney.com/stocks/tata-motors-ltd-share-price) |
+| UBS | ₹550 | +23.4%  [multibagg](https://www.multibagg.ai/market-pulse/articles/tata-motors-cv-ubs-buy-rating-cmkxk77fy4rnkrt0j1yikd5yz) |
+| Emkay Global | ₹750 | +68.2%  [moneycontrol](https://www.moneycontrol.com/news/touchwoodentertainmentltd/brokerage-reports-TEL-6months.html) |
+| ICICI Securities | ₹831 | +86.4%  [moneycontrol](https://www.moneycontrol.com/news/touchwoodentertainmentltd/brokerage-reports-TEL-6months.html) |
+| High (Bull Case) | ₹1200 | +169.3%  [univest](https://univest.in/blogs/tata-motors-share-price-target-2026-analyst-forecast-bull-amp-bear-case) |
+| Low (Bear Case) | ₹480 | -7.7%  [univest](https://univest.in/blogs/tata-motors-share-price-target-2026-analyst-forecast-bull-amp-bear-case) |
+
+Current Price (Latest Close): ₹445.20. [choiceindia](https://choiceindia.com/stocks/tata-motors-ltd-share-price-history)
+Market Capitalization: ₹1.49 lakh crore = ₹1,49,400 lakh. [companiesmarketcap](https://companiesmarketcap.com/inr/tata-motors/marketcap/)
+
+## Key Takeaways
+- Strong Buy technical signals from moving averages and indicators like RSI (60.9 Buy), MACD. [in.investing](https://in.investing.com/equities/tata-motors-ltd-technical)
+- Analyst consensus points to meaningful upside (avg +71.5%) driven by JLR margins, PV launches, CV stabilization. [univest](https://univest.in/blogs/tata-motors-share-price-target-2026-analyst-forecast-bull-amp-bear-case)
+- Recent price action shows volatility with 52-week range ₹306-₹1300 equivalent, trading 13% off highs. [screener](https://www.screener.in/company/TMCV/)
+
+## Actionable Insights for Investors
+- **Buy on dips** below ₹440 targeting ₹765 consensus with 70%+ upside potential; stop-loss at ₹430. [indmoney](https://www.indmoney.com/stocks/tata-motors-ltd-share-price)
+- Monitor Q4 FY26 earnings for JLR/CV guidance confirmation; positive beats could drive to ₹850-1000. [univest](https://univest.in/blogs/tata-motors-share-price-target-2026-analyst-forecast-bull-amp-bear-case)
+- Accumulate for long-term (2026 end ₹1372 forecast) if EV/PV growth sustains amid macro recovery. [figw](https://figw.in/tata-motors-share-price-target-forecast/)
