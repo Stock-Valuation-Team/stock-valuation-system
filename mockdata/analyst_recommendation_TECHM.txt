@@ -1,0 +1,35 @@
+**Current Price (Latest Close):** ₹1,501 [screener](https://www.screener.in/company/TECHM/consolidated/)
+**Market Capitalization:** ₹1.47 lakh crore = ₹1,47,08,400 lakh [screener](https://www.screener.in/company/TECHM/consolidated/)
+
+## Professional Institutional Recommendations
+
+| Rating Category | Number of Analysts | Percentage |
+|-----------------|---------------------|------------|
+| Strong Buy      | 12                  | 21%        |
+| Buy             | 18                  | 32%        |
+| Hold            | 10                  | 18%        |
+| Sell            | 12                  | 21%        |
+| Strong Sell     | 4                   | 7%         |
+
+**Consensus Professional Recommendation: HOLD** [in.investing](https://in.investing.com/equities/tech-mahindra-consensus-estimates)
+
+## Target Price Distribution
+
+| Price Range     | Number of Targets | Percentage | Implied Upside/Downside |
+|-----------------|-------------------|------------|-------------------------|
+| Below ₹1,400    | 8                 | 14%        | -7% to -2%              |
+| ₹1,400 - ₹1,600 | 22                | 39%        | -7% to +7%              |
+| ₹1,600 - ₹1,800 | 18                | 32%        | +7% to +20%             |
+| Above ₹1,800    | 9                 | 16%        | +20%+                   |
+
+**Average Target Price: ₹1,630 (Implied Upside: +9%)** [marketscreener](https://www.marketscreener.com/quote/stock/TECH-MAHINDRA-LIMITED-33647041/consensus/)
+
+## Key Takeaways
+- Tech Mahindra exhibits steady revenue growth at ~4-7% YoY with improving EBIT margins nearing 12-13%, driven by digital services and cost optimization. [smart-investing](https://www.smart-investing.in/main.php?Company=TECH+MAHINDRA+LTD)
+- Valuation trades at P/E ~28-30x, premium to peers like TCS/Infosys, supported by 3% dividend yield and debt-free status. [smart-investing](https://www.smart-investing.in/main.php?Company=TECH+MAHINDRA+LTD)
+- Mixed brokerage views post-Q2FY26: Buy calls cite turnaround progress; sells flag macro risks and optimistic margins. [multibagg](https://www.multibagg.ai/market-pulse/articles/tech-mahindra-brokerage-target-cuts-cmo46m0i5h0pwph0jkn746b51)
+
+## Actionable Insights for Investors
+- Accumulate on dips below ₹1,450 for 10-15% upside to consensus target if margins sustain 12%+. [in.investing](https://in.investing.com/equities/tech-mahindra-consensus-estimates)
+- Trim positions above ₹1,700 amid high P/E and potential IT sector slowdown; hold core for dividends. [screener](https://www.screener.in/company/TECHM/consolidated/)
+- Monitor Q4FY26 earnings for deal wins and US client spending; positive surprises could lift to ₹1,800+. [economictimes.indiatimes](https://economictimes.indiatimes.com/markets/stocks/tech-mahindra-shares-rise-1-5-after-q3-pat-jumps-93-yoy-should-you-buy-sell-or-hold/articleshow/117383858.cms)

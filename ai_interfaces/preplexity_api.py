@@ -19,24 +19,83 @@ def _normalize_name(value):
     return text
 
 
+def _map_recommendation_label(label):
+    normalized = re.sub(r"[^a-z]+", " ", str(label or "").lower()).strip()
+    if not normalized:
+        return None
+
+    bullish_terms = (
+        "strong buy",
+        "outperform",
+        "overweight",
+        "accumulate",
+        "add",
+        "buy",
+    )
+    bearish_terms = (
+        "underperform",
+        "reduce",
+        "sell",
+    )
+    neutral_terms = (
+        "market perform",
+        "equal weight",
+        "equalweight",
+        "neutral",
+        "hold",
+    )
+
+    for term in bullish_terms:
+        if term in normalized:
+            return "BUY"
+    for term in bearish_terms:
+        if term in normalized:
+            return "SELL"
+    for term in neutral_terms:
+        if term in normalized:
+            return "HOLD"
+    return None
+
+
 def _extract_action_from_text(content):
     raw = str(content or "")
     upper = raw.upper()
 
     # Prefer the explicit consensus line if present.
     consensus_match = re.search(
-        r"CONSENSUS\s+PROFESSIONAL\s+RECOMMENDATION\s*:\s*\**\s*(BUY|HOLD|SELL)\b",
-        upper,
+        r"CONSENSUS\s+PROFESSIONAL\s+RECOMMENDATION\s*:\s*\**\s*([^\n\r]+)",
+        raw,
+        flags=re.IGNORECASE,
     )
     if consensus_match:
-        return consensus_match.group(1)
+        action = _map_recommendation_label(consensus_match.group(1))
+        if action:
+            return action
 
-    if "SELL" in upper or "REDUCE" in upper or "UNDERPERFORM" in upper:
-        return "SELL"
-    if "BUY" in upper or "OUTPERFORM" in upper or "OVERWEIGHT" in upper or "ADD" in upper:
-        return "BUY"
-    if "HOLD" in upper or "NEUTRAL" in upper:
-        return "HOLD"
+    # Fallback to the consensus row in markdown table output.
+    table_consensus_match = re.search(
+        r"\|\s*Consensus[^|]*\|\s*([^|]+)\|",
+        raw,
+        flags=re.IGNORECASE,
+    )
+    if table_consensus_match:
+        action = _map_recommendation_label(table_consensus_match.group(1))
+        if action:
+            return action
+
+    # Last resort: score directional terms in the report.
+    score = {"BUY": 0, "HOLD": 0, "SELL": 0}
+    for token in ("BUY", "OUTPERFORM", "OVERWEIGHT", "ACCUMULATE", "ADD"):
+        score["BUY"] += len(re.findall(rf"\b{re.escape(token)}\b", upper))
+    for token in ("HOLD", "NEUTRAL"):
+        score["HOLD"] += len(re.findall(rf"\b{re.escape(token)}\b", upper))
+    for token in ("SELL", "REDUCE", "UNDERPERFORM"):
+        score["SELL"] += len(re.findall(rf"\b{re.escape(token)}\b", upper))
+
+    top_action = max(score, key=score.get)
+    if score[top_action] > 0:
+        return top_action
+
     return "HOLD"
 
 

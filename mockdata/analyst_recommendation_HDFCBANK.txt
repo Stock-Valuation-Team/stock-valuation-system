@@ -1,0 +1,28 @@
+## Professional Institutional Recommendations
+
+Consensus Professional Recommendation: **Buy**. [valueinvesting](https://valueinvesting.io/HDFCBANK.NS/estimates)
+Average brokerage recommendation score of 1.8 on a 1-5 scale (1=Strong Buy, 5=Sell) from 46 firms. [alphaspread](https://www.alphaspread.com/security/nse/hdfcbank/analyst-estimates)
+Recent broker views include Kotak Buy at ₹1050, Motilal Oswal Buy at ₹1153. [kotakneo](https://www.kotakneo.com/stock-research-recommendations/equity/longterm/hdfc-bank-share-price/)
+
+## Target Price Distribution
+
+| Brokerage/Firm | Target Price | Implied Upside/Downside |
+|----------------|--------------|-------------------------|
+| Consensus (41-46 analysts) | ₹1153 | +42.5%  [valueinvesting](https://valueinvesting.io/HDFCBANK.NS/estimates) |
+| Kotak Neo | ₹1050 | +29.7%  [kotakneo](https://www.kotakneo.com/stock-research-recommendations/equity/longterm/hdfc-bank-share-price/) |
+| Alpha Spread | ₹1154 | +42.6%  [alphaspread](https://www.alphaspread.com/security/nse/hdfcbank/analyst-estimates) |
+| High (Bull Case) | ₹1575 | +94.6%  [alphaspread](https://www.alphaspread.com/security/nse/hdfcbank/analyst-estimates) |
+| Low (Bear Case) | ₹848 | +4.8%  [alphaspread](https://www.alphaspread.com/security/nse/hdfcbank/analyst-estimates) |
+
+Current Price (Latest Close): ₹795.45. [kotakneo](https://www.kotakneo.com/stocks/hdfc-bank-share-price/)
+Market Capitalization: ₹12.24 lakh crore = ₹12,24,465 lakh. [kotakneo](https://www.kotakneo.com/stocks/hdfc-bank-share-price/)
+
+## Key Takeaways
+- Strong Buy consensus with avg 42% upside driven by post-merger normalization, deposit growth, NIM recovery. [univest](https://univest.in/blogs/blogs-hdfc-bank-target-share-price-target-2026)
+- Recent Q4 results show 7.1% QoQ revenue growth, 12.8% YoY net profit rise; EPS ₹12.82. [kotakneo](https://www.kotakneo.com/stocks/hdfc-bank-share-price/)
+- Trading at P/E 16.4 with 52-week range ₹727-₹1020, down 17% YTD amid sector pressures. [screener](https://www.screener.in/company/HDFCBANK/consolidated/)
+
+## Actionable Insights for Investors
+- **Buy on dips** below ₹790 targeting ₹1153 consensus with 40%+ upside; stop-loss at ₹770. [alphaspread](https://www.alphaspread.com/security/nse/hdfcbank/analyst-estimates)
+- Watch Q1 FY27 for NIM/asset quality updates; beats could lift to ₹1300+. [univest](https://univest.in/blogs/blogs-hdfc-bank-target-share-price-target-2026)
+- Accumulate for 2026-27 horizon (bull ₹2200) on retail/wholesale loan expansion. [univest](https://univest.in/blogs/blogs-hdfc-bank-target-share-price-target-2026)
