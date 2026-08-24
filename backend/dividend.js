@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const yahooFinance = require('yahoo-finance2').default;
-const db = require('../db');
+const YahooFinance = require('yahoo-finance2').default;
+const yahooFinance = new YahooFinance({
+    suppressNotices: ['yahooSurvey'],
+    logger: { ...console, warn: (msg, ...args) => { if (!String(msg).includes('Unsupported environment')) console.warn(msg, ...args); } }
+});
+const db = require('./db');
 
 // GET dividend data
 router.get('/:symbol', async (req, res) => {
@@ -20,15 +24,21 @@ router.get('/:symbol', async (req, res) => {
             dividend: item.dividends
         }));
 
-        // Save to DB
-        formatted.forEach(d => {
-            db.query(
-                "INSERT INTO dividends (symbol, date, dividend) VALUES (?, ?, ?)",
-                [symbol, d.date, d.dividend]
-            );
-        });
+        // Save to DB safely if connected
+        if (db && typeof db.query === 'function') {
+            formatted.forEach(d => {
+                db.query(
+                    "INSERT INTO dividends (symbol, date, dividend) VALUES (?, ?, ?)",
+                    [symbol, d.date, d.dividend],
+                    (err) => {
+                        if (err) console.warn("Dividend DB save skipped:", err.message);
+                    }
+                );
+            });
+        }
 
         res.json(formatted);
+
 
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch dividend data" });

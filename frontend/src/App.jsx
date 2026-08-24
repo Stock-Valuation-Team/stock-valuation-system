@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 
 const TOP_STOCKS = ['AAPL', 'MSFT', 'KO', 'PEP', 'JNJ', 'PG', 'MMM', 'ABBV', 'CVX', 'XOM', 'IBM', 'VZ', 'T', 'WBA', 'CSCO'];
 const RANGES = ['1D', '1W', '1M', '3M', '6M', '1Y'];
@@ -28,6 +29,8 @@ function App() {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [chatLoading, setChatLoading] = useState(false);
+  const [chatStatus, setChatStatus] = useState('');
+  const chatEndRef = useRef(null);
 
   const formatChatMessage = (text) => {
     return text.split('\n').map((line, lineIdx) => {
@@ -55,15 +58,15 @@ function App() {
     });
   };
 
-  const sendChatMessage = async (e) => {
+  const sendChatMessage = async (e, overrideText) => {
     if (e) e.preventDefault();
-    if (!chatInput.trim() || chatLoading) return;
-    const question = chatInput.trim();
+    const question = (overrideText || chatInput).trim();
+    if (!question || chatLoading) return;
     setChatInput('');
     setChatMessages(prev => [...prev, { sender: 'user', text: question }]);
     setChatLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/ai/chat', {
+      const res = await axios.post(`${API_BASE_URL}/api/ai/chat`, {
         ticker: selectedTicker,
         question: question,
         context: aiData
@@ -80,7 +83,7 @@ function App() {
     setAiLoading(true);
     setAiError(null);
     try {
-      const response = await axios.get(`http://localhost:5000/api/ai/recommend/${ticker}?rf=${currentRf}&rm=${currentRm}`);
+      const response = await axios.get(`${API_BASE_URL}/api/ai/recommend/${ticker}?rf=${currentRf}&rm=${currentRm}`);
       setAiData(response.data);
       setChatMessages([
         {
@@ -103,7 +106,7 @@ function App() {
       setCommittedRm(rm);
       const delay = new Promise(resolve => setTimeout(resolve, 1500));
       const [response] = await Promise.all([
-        axios.get(`http://localhost:5000/api/ddm/analyze/${ticker}?range=${range.toLowerCase()}`),
+        axios.get(`${API_BASE_URL}/api/ddm/analyze/${ticker}?range=${range.toLowerCase()}`),
         delay
       ]);
       setAnalysisData(response.data);
@@ -121,16 +124,39 @@ function App() {
     setActiveTab('backtest');
     try {
       const [response] = await Promise.all([
-        axios.get(`http://localhost:5000/api/backtest/${selectedTicker}?years=5&investment=${investment}&rf=${rf}&rm=${rm}`),
+        axios.get(`${API_BASE_URL}/api/backtest/${selectedTicker}?years=5&investment=${investment}&rf=${rf}&rm=${rm}`),
         new Promise(r => setTimeout(r, 1500))
       ]);
       setBacktestData(response.data);
     } catch (e) { console.error(e); } finally { setBacktestLoading(false); }
   };
 
+
   useEffect(() => {
     fetchAnalysis(selectedTicker, activeRange);
   }, [selectedTicker, activeRange]);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages, chatLoading]);
+
+  useEffect(() => {
+    if (!chatLoading) { setChatStatus(''); return; }
+    const stages = [
+      'Analyzing your query...',
+      'Fetching market context...',
+      'Running quantitative models...',
+      'Generating insights...',
+      'Finalizing response...'
+    ];
+    let idx = 0;
+    setChatStatus(stages[0]);
+    const interval = setInterval(() => {
+      idx = (idx + 1) % stages.length;
+      setChatStatus(stages[idx]);
+    }, 420);
+    return () => clearInterval(interval);
+  }, [chatLoading]);
 
   const model = useMemo(() => {
     if (!analysisData) return null;
@@ -323,15 +349,6 @@ function App() {
               </div>
            </div>
            <div className="flex items-center gap-12">
-              <div className="text-right">
-                 <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Confidence Level</div>
-                 <div className="text-4xl font-black text-white">
-                    {loading ? '---' : model?.confidence}%
-                 </div>
-                 <div className="w-full h-1 bg-white/5 rounded-full mt-2 overflow-hidden">
-                    <div className="h-full bg-sky-500 transition-all duration-1000" style={{ width: loading ? '0%' : `${model?.confidence}%` }}></div>
-                 </div>
-              </div>
               <button className={`px-10 py-4 rounded-xl text-xl font-black transition-all ${model?.bg} ${model?.color} border border-current ${model?.glow}`}>
                  {model?.signal}
               </button>
@@ -617,11 +634,116 @@ function App() {
                        </tbody>
                      </table>
                    </div>
-                 </section>
-               </>
-             )}
-           </div>
-         )}
+                  </section>
+
+                  {/* AI Q&A CHATBOT WIDGET */}
+                  <section className="glass-card overflow-hidden flex flex-col" style={{borderColor:'rgba(56,189,248,0.15)',background:'rgba(10,18,35,0.85)'}}>
+                    <div className="p-5 border-b flex justify-between items-center" style={{borderColor:'rgba(255,255,255,0.05)',background:'rgba(56,189,248,0.04)'}}>
+                      <div className="flex flex-col gap-0.5">
+                        <h3 className="text-xs font-black text-gray-300 uppercase tracking-widest flex items-center gap-2">
+                          <span style={{fontSize:'16px'}}>🤖</span> AI Q&amp;A Assistant
+                        </h3>
+                        <span className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">Ask anything about this stock's rating, valuation, or dividend health</span>
+                      </div>
+                      <div className="flex items-center gap-2 px-2.5 py-1 rounded-full border text-[8px] font-black tracking-widest uppercase" style={{borderColor:'rgba(52,211,153,0.25)',color:'#34d399',background:'rgba(52,211,153,0.05)'}}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Live
+                      </div>
+                    </div>
+
+                    {/* Message Feed */}
+                    <div className="flex flex-col gap-3 p-5 overflow-y-auto" style={{minHeight:'280px',maxHeight:'380px'}}>
+                      {chatMessages.map((msg, i) => (
+                        <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                          {msg.sender === 'ai' && (
+                            <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-0.5" style={{background:'linear-gradient(135deg,#0ea5e9,#6366f1)',fontSize:'11px'}}>🤖</div>
+                          )}
+                          <div
+                            className="rounded-2xl px-4 py-3 max-w-[75%] text-[11px] leading-relaxed"
+                            style={msg.sender === 'user'
+                              ? {background:'linear-gradient(135deg,#0ea5e9,#6366f1)',color:'white',borderBottomRightRadius:'4px',boxShadow:'0 4px 20px rgba(14,165,233,0.2)'}
+                              : {background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.07)',color:'#d1d5db',borderBottomLeftRadius:'4px'}
+                            }
+                          >
+                            {msg.sender === 'ai'
+                              ? <div>{formatChatMessage(msg.text)}</div>
+                              : <span>{msg.text}</span>
+                            }
+                          </div>
+                          {msg.sender === 'user' && (
+                            <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ml-2 mt-0.5" style={{background:'rgba(255,255,255,0.08)',fontSize:'11px'}}>👤</div>
+                          )}
+                        </div>
+                      ))}
+
+                      {/* Typing Indicator */}
+                      {chatLoading && (
+                        <div className="flex justify-start">
+                          <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mr-2 mt-1" style={{background:'linear-gradient(135deg,#0ea5e9,#6366f1)',fontSize:'11px'}}>🤖</div>
+                          <div className="rounded-2xl px-4 py-3 flex flex-col gap-2" style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.07)',borderBottomLeftRadius:'4px',minWidth:'180px'}}>
+                            <div className="flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{animationDelay:'0ms'}}></span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{animationDelay:'150ms'}}></span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{animationDelay:'300ms'}}></span>
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-wider" style={{color:'#7dd3fc'}}>{chatStatus}</span>
+                          </div>
+                        </div>
+                      )}
+                      <div ref={chatEndRef} />
+                    </div>
+
+                    {/* Quick Questions */}
+                    <div className="px-5 pb-3 flex flex-wrap gap-2">
+                      {[
+                        'Why this rating?',
+                        'Explain the DSI score',
+                        'Is there cut risk?',
+                        'Valuation breakdown',
+                        'Compare with peers'
+                      ].map((q, i) => (
+                        <button
+                          key={i}
+                          id={`quick-question-${i}`}
+                          onClick={() => sendChatMessage(null, q)}
+                          disabled={chatLoading}
+                          className="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider transition-all disabled:opacity-40"
+                          style={{border:'1px solid rgba(56,189,248,0.2)',color:'#7dd3fc',background:'rgba(56,189,248,0.05)'}}
+                          onMouseEnter={e => e.target.style.background='rgba(56,189,248,0.12)'}
+                          onMouseLeave={e => e.target.style.background='rgba(56,189,248,0.05)'}
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Input Bar */}
+                    <form onSubmit={sendChatMessage} className="p-4 border-t flex gap-3 items-center" style={{borderColor:'rgba(255,255,255,0.05)',background:'rgba(255,255,255,0.01)'}}>
+                      <input
+                        id="chat-input"
+                        type="text"
+                        value={chatInput}
+                        onChange={e => setChatInput(e.target.value)}
+                        placeholder={aiData ? `Ask about ${aiData.name} (${aiData.ticker})...` : 'Ask a question...'}
+                        disabled={chatLoading}
+                        className="flex-1 bg-transparent text-sm text-gray-200 placeholder-gray-600 outline-none disabled:opacity-50"
+                        style={{border:'none'}}
+                      />
+                      <button
+                        id="chat-send-btn"
+                        type="submit"
+                        disabled={chatLoading || !chatInput.trim()}
+                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 font-black text-sm transition-all active:scale-90 disabled:opacity-30"
+                        style={{background:'linear-gradient(135deg,#0ea5e9,#6366f1)',color:'white',boxShadow:'0 4px 15px rgba(14,165,233,0.25)'}}
+                      >
+                        ➤
+                      </button>
+                    </form>
+                  </section>
+
+                </>
+              )}
+            </div>
+          )}
  
          {/* BACKTEST TAB */}
          {activeTab === 'backtest' && (

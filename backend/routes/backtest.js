@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const YahooFinance = require('yahoo-finance2').default;
-const yf = new YahooFinance();
+const yf = new YahooFinance({
+    suppressNotices: ['yahooSurvey'],
+    logger: { ...console, warn: (msg, ...args) => { if (!String(msg).includes('Unsupported environment')) console.warn(msg, ...args); } }
+});
 
 router.get('/:ticker', async (req, res) => {
     const { ticker } = req.params;
