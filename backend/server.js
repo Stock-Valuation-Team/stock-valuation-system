@@ -24,14 +24,16 @@ const ddmRoute = require('./routes/ddm');
 const backtestRoute = require('./routes/backtest');
 const aiRoute = require('./routes/ai');
 const screenerRoute = require('./routes/screener');
+const mlRoute       = require('./routes/ml');
 
 app.use('/api/dividends', dividendRoute);
 app.use('/api/ddm', ddmRoute);
 app.use('/api/backtest', backtestRoute);
 app.use('/api/ai', aiRoute);
 app.use('/api/screener', screenerRoute);
+app.use('/api/ml', mlRoute);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
